@@ -1,0 +1,63 @@
+/* create.module.css */
+
+.create-page {
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+  }
+  
+  .create-text {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: black;
+  }
+  
+  .form-container {
+    display: flex;
+    justify-content: center;
+    color: black;
+  }
+  
+  .form-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 10px;
+  }
+  
+  .form-container label {
+    margin-bottom: 5px;
+  }
+  
+  .form-container input,
+  .form-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  
+  .form-button-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 0 10px;
+    align-items: flex-start; /* Align fields to the top */
+  }
+  
+  .right-column {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 0 10px;
+  }
+  

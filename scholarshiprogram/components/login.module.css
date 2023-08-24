@@ -1,0 +1,91 @@
+.login-page {
+  background: url(/background_login.png);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.h1 {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.label {
+  color: black;
+}
+
+.login-container {
+  max-width: 400px;
+  padding: 20px;
+  background-color: #fefefe;
+  border-radius: 4px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  display: flex; /* Use flexbox */
+  align-items: center; /* Align label and input vertically */
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.loginbutton {
+  padding: 10px 10px;
+  background-color: #3e4854; /* Change this color to your desired button color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+} 
+
+.registerbutton {
+  padding: 10px 10px;
+  background-color: #3e4854; /* Change this color to your desired button color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.staffbutton {
+  padding: 10px 10px;
+  background-color: #3e4854; /* Change this color to your desired button color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+} 
+
+.buttons-container {
+  display: flex; /* Use flexbox */
+  justify-content: space-between; /* Space buttons equally */
+  margin-top: 20px;
+}
+
+.login-heading {
+  color: black;
+  margin-left: 10px;
+  display: flex;
+}
+
+.login-content {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.logo-image {
+  margin-right: 10px; /* Add margin to the right side of the image */
+}
+
+.login-heading-container {
+  flex: 1; /* Allow the container to expand and push the text to the right */
+}
