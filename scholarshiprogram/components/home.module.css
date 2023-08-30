@@ -79,11 +79,25 @@
   align-items: center;
 }
 
+.work-title {
+  flex: 1;
+}
+
 .works-list {
   color: #121111;
   display: flex;
   flex: 1; /* Take up remaining space */
   margin-right: 1rem; /* Add some spacing between the two sections */ 
+}
+
+.work-item {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Vertically align content */
+}
+
+.work-content {
+  display: flex;
+  align-items: center;
 }
 
 .worksul {
@@ -94,9 +108,24 @@
 
 .work-details {
   padding: 20px; /* Add spacing around the content */
-  border: 1px solid #ccc; /* Optional: Add a border for visual separation */
+  /* border: 1px solid #ccc;  Optional: Add a border for visual separation */
   color: black;
   flex: 2; /* Take up twice the space of the works list */
+}
+
+.no-works-message {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.no-works-image {
+  width: 300px; /* Adjust the width as needed */
+  height: auto;
+  margin-bottom: 10px; /* Add spacing between image and message */
 }
 
 .line {
@@ -124,6 +153,11 @@
   align-items: center;
 }
 
+.works-list .work-image {
+  width: 100px; /* Adjust the width as needed */
+  height: auto; /* Automatically adjust height to maintain aspect ratio */
+  margin-right: 10px;
+}
 
 .apply-button {
   padding: 6px 12px;
@@ -346,3 +380,4 @@
 .content-text {
   color: black /* Specify your desired text color here */;
 }
+

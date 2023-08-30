@@ -13,6 +13,7 @@ export default function Register() {
     const [works, setWorks] = useState([
       {
         id: 1,
+        image: '/workpost.png',
         title: 'Work 1',
         description: 'Work 1 Description',
         details: 'Work 1 Detail',
@@ -25,6 +26,7 @@ export default function Register() {
       },
       {
         id: 2,
+        image: '/workpost.png',
         title: 'Work 2',
         description: 'Work 2 Description',
         details: 'Work 2 Detail',
@@ -47,6 +49,12 @@ export default function Register() {
       setCreateFormVisible(false); // Hide create form if it's open
   };
 
+    const handleDelete = (workId) => {
+      const updatedWorks = works.filter(work => work.id !== workId);
+      setWorks(updatedWorks);
+      setSelectedWork(null);
+  };
+
     const toggleCreateForm = () => {
       setCreateFormVisible((prevVisible) => !prevVisible);
   };
@@ -58,13 +66,20 @@ export default function Register() {
       <div className={styles.line} />
       <div className={styles['home-page']}>
         <div className={styles['works-list']}>
-              <div>
-              {works.map((work) => (
-              <div key={work.id} onClick={() => handleWorkClick(work.id)}>
-                {work.title}
-              </div>
-            ))}
-              </div>
+          <div>
+                {works.map((work) => (
+                <div key={work.id} onClick={() => handleWorkClick(work.id) }className={styles['work-item']}>
+                  <img src= {work.image} 
+                  alt={`Image for ${work.title}`}
+                  style={{width: '100px', height: 'auto'}} 
+                  />
+                <div className={styles['work-details']}>
+                  <div className={styles['work-title']}>{work.title}</div>
+                  <div className={styles['work-description']}>{work.description}</div>
+                </div>
+                </div>
+              ))}
+            </div>
           </div>
           <div className={styles['work-details']}>
           {selectedWork ? (
@@ -81,6 +96,9 @@ export default function Register() {
                 </button>
               </div>
 
+              <div className={styles['selected-image']}>
+                <img src={selectedWork.image} alt={`Image for ${selectedWork.title}`} style={{width: '100px', height: 'auto'}} />
+              </div>
               <h2>{selectedWork.title}</h2>
               <p>{selectedWork.description}</p>
 
@@ -109,7 +127,16 @@ export default function Register() {
               </div>
             </>
           ) : (
-            <p>There are Works</p>
+            <div className={styles['no-works-message']}>
+              <img
+                src="/workposter.png"
+                alt="No Works"
+                className={styles['no-works-image']
+                }
+              />
+              <h3>There are scholarship works</h3>
+              <p>Select work for seeing more detail</p>
+            </div>
           )}
           
           </div>
