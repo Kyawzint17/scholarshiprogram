@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import ProfileNavbar from '@/components/profileNavbar';
 import styles from '../components/home.module.css'
 import {CircularProgress, Card, CardBody, CardFooter, Chip} from "@nextui-org/react";
-
+import CircularProgressCard from '@/components/CircleProgress';
 
 // Inside your component
 // ...
@@ -17,8 +17,22 @@ export default function Profile() {
   const [works, setWorks] = useState([
     {
       id: 1,
-      appliedList: 'Applied List',
-      history: 'History',
+      image: '/workpost.png',
+      title: 'Work 1',
+      hours: '60 hours',
+      appliedList: [
+        { status: 'Accepted', icon: '/applied.png' },
+        { status: 'Pending', icon: '/not_applied.png' },
+        { status: 'Rejected', icon: '/not_applied.png' },
+        // Add more work entries with images and status
+      ],
+      history: [
+        { status: 'Completed', icon: '/completed.png' },
+        { status: 'In Progress', icon: '/in_progress.png' },
+        { status: 'Imcompleted', icon: '/not_applied.png' },
+        // Add more work entries with images and status
+      ],
+      
     },
   ]);
 
@@ -34,20 +48,32 @@ export default function Profile() {
     <>
       <ProfileNavbar />
       <div className={styles.line} />
+      <h1 className={styles['textProfile']}>
+        PROFILE
+      </h1>
       <div className={styles['home-page']}>
         <div className={styles['profileSection']}>
           <div className={styles['profilePictureContainer']}>
             <Image src="/profile_pic.png" className={styles['profilePicture']} alt="Profile Picture" width={100} height={100} />
           </div>
           <div className={styles['profileContent']}>
-            <div>Sasha the Great</div>
-            <div>1701202</div>
+            <div>Anwar Rasheed</div>
+            <div>6228105</div>
+            <div className={styles['infoBox']}>
+              <div className={styles['infoTitle']}>Faculty</div>
+            </div>
+            <div className={styles['infoBox']}>
+              <div className={styles['infoTitle']}>Email</div>
+            </div>
           </div>
         </div>
         <div className={styles['detailSection']}>
           <div className={styles['topDetail']}>
             <div className={styles['hourContent']}>
               Scholarship work hours 1/2023   
+            </div>
+            <div>
+              <CircularProgressCard value={value} />
             </div>
           </div>
           <div className={styles['bottomDetail']}>
@@ -73,11 +99,47 @@ export default function Profile() {
             </div>
             {selectedAppliedList ? (
               <div className={styles['qualification-info']}>
-                <p className={styles['content-text']}>{works[0].appliedList}</p>
+                {works[0].appliedList.map((entry, index) => (
+                  <div key={index} className={styles['work-entry']}>
+                    <div className={styles['work-image']}>
+                      <img src={works[0].image} alt={`Work ${index + 1}`} />
+                    </div>
+                    <div className={styles['work-title']}>
+                      <div>
+                      {works[0].title}
+                      </div>
+                      <div>
+                      {works[0].hours}
+                      </div>
+                    </div>
+                    <div className={styles['work-status']}>
+                      <img src={entry.icon} alt={`${entry.status} Icon`} />
+                      {entry.status}
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <div className={styles['details-info']}>
-                <p className={styles['content-text']}>{works[0].history}</p>
+                {works[0].history.map((entry, index) => (
+                  <div key={index} className={styles['work-entry']}>
+                    <div className={styles['work-image']}>
+                      <img src={works[0].image} alt={`Work ${index + 1}`} />
+                    </div>
+                    <div className={styles['work-title']}>
+                      <div>
+                      {works[0].title}
+                      </div>
+                      <div>
+                      {works[0].hours}
+                      </div>
+                    </div>
+                    <div className={styles['work-status']}>
+                      <img src={entry.icon} alt={`${entry.status} Icon`} />
+                      {entry.status}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>

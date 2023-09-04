@@ -17,6 +17,8 @@ export default function Register() {
         title: 'Work 1',
         description: 'Work 1 Description',
         details: 'Work 1 Detail',
+        qualifications: 'Qualification information 1',
+        contacts: 'Contact information 1',
         studentApplied: [
           { info: 'Student Applied 1' },
         ],
@@ -30,6 +32,8 @@ export default function Register() {
         title: 'Work 2',
         description: 'Work 2 Description',
         details: 'Work 2 Detail',
+        qualifications: 'Qualification information 2', 
+        contacts: 'Contact information 2',
         studentApplied: [
           { info: 'Student Applied 2' },
         ],
@@ -108,22 +112,21 @@ export default function Register() {
                     className={!selectedContact}
                     onClick={() => {
                       setSelectedContact(null);
-                      setSelectedStudentApplied(false);
                     }}
                   >
                     Details
                   </h3>
                 </div>
 
-                {selectedContact ? (
-                  <div className={styles['first-info']}>
-                    <p>{selectedWork.details}</p>
-                  </div>
-                ) : (
-                  <div className={styles['first-info']}>
-                    <p>{selectedWork.details}</p>
-                  </div>
-                )}
+                <div className={styles['details-info']}>
+                  <h3>Qualification</h3>
+                  <p>{selectedWork.qualifications}</p>
+                </div>
+
+                <div className={styles['details-info']}>
+                  <h3>Contact</h3>
+                  <p>{selectedWork.contacts}</p>
+                </div>
               </div>
             </>
           ) : (

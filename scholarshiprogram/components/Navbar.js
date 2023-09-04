@@ -19,14 +19,14 @@ const NavBar = () => {
       <div className={styles.logo}>
         <div className={styles.logoContainer}>
           <Image src="/abac_logo.png" alt="Logo" width={40} height={40} />
-          <Link href={'/'}>
           <div className={styles.logoText}>
             AU Scholarship
           </div>
-          </Link>
         </div>
         <div className={styles['imge-container']}>
-        <div  className={styles['text2']}>Apply Status</div>
+        <Link href={'/'}>
+        <div  className={styles['text2']}>Log Out</div>
+        </Link>
         <Image src="/profile_pic.png" alt="Another Image" width={35} height={35} />
         </div>
         <div className={styles['text-container']}>

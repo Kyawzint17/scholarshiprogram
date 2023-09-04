@@ -31,6 +31,8 @@ export default function Home() {
       title: 'Work 1',
       description: 'Work 1 Description',
       details: 'Work 1 Detail',
+      qualifications: 'Qualification information',
+      contacts: 'Contact information',
       studentApplied: [
         { info: 'Student Applied 1' },
       ],
@@ -44,6 +46,8 @@ export default function Home() {
       title: 'Work 2',
       description: 'Work 2 Description',
       details: 'Work 2 Detail',
+      qualifications: 'Qualification information',
+      contacts: 'Contact information',
       studentApplied: [
         { info: 'Student Applied 2' },
       ],
@@ -130,6 +134,7 @@ export default function Home() {
                   >
                     Details
                   </h3>
+                  
                   <h3
                     className={selectedStudentApplied ? styles['active-title'] : ''}
                     onClick={() => {
@@ -149,6 +154,7 @@ export default function Home() {
                     Student Progress
                   </h3>
                 </div>
+                
 
                 {selectedContact ? (
                   <div className={styles['first-info']}>
@@ -161,7 +167,15 @@ export default function Home() {
                   </div>
                 ) : (
                   <div className={styles['details-info']}>
-                    <p>{selectedWork.details}</p>
+                      <div className={styles['details-info']}>
+                        <h3>Qualification</h3>
+                        <p>{selectedWork.qualifications}</p>
+                      </div>
+
+                      <div className={styles['details-info']}>
+                        <h3>Contact</h3>
+                        <p>{selectedWork.contacts}</p>
+                      </div>
                   </div>
                 )}
               </div>
