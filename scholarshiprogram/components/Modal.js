@@ -10,7 +10,7 @@ const Modal = ({ isOpen, onClose }) => {
     title: '',
     hours: '',
     students: '',
-    datetime: '',
+    datetime: [],
     location: '',
     details: '',
     qualification: '',
@@ -28,6 +28,23 @@ const Modal = ({ isOpen, onClose }) => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  
+  const addDateTime = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      datetime: [...prevData.datetime, ''], // Add an empty string for a new date-time input
+    }));
+  };
+
+  const handleDateTimeChange = (index, value) => {
+    const newDateTime = [...formData.datetime];
+    newDateTime[index] = value;
+    setFormData((prevData) => ({
+      ...prevData,
+      datetime: newDateTime,
     }));
   };
 
@@ -50,32 +67,12 @@ const Modal = ({ isOpen, onClose }) => {
                     required
                   />
 
-                  <label htmlFor="hours">Scholarship Hours</label>
+                <label htmlFor="hours">Scholarship Hours</label>
                 <input
                   type="number"
                   id="hours"
                   name="hours"
                   value={formData.hours}
-                  onChange={handleChange}
-                  required
-                />
-
-                <label htmlFor="students">Limited Students Number</label>
-                <input
-                  type="number"
-                  id="students"
-                  name="students"
-                  value={formData.students}
-                  onChange={handleChange}
-                  required
-                />
-
-                <label htmlFor="datetime">Date and Time of Work</label>
-                <input
-                  type="datetime-local"
-                  id="datetime"
-                  name="datetime"
-                  value={formData.datetime}
                   onChange={handleChange}
                   required
                 />
@@ -90,23 +87,67 @@ const Modal = ({ isOpen, onClose }) => {
                   required
                 />
                 </div>
+
+                <div className={styles['add-button-wrapper']}>
+                  <button type="button" onClick={addDateTime}>
+                    Add Date and Time
+                  </button>
+                </div>
+
+                {formData.datetime.map((dateTime, index) => (
+                    <div key={index}>
+                      <label htmlFor={`datetime${index}`}>
+                        Date and Time of Work #{index + 1}
+                      </label>
+                      <input
+                        type="datetime-local"
+                        id={`datetime${index}`}
+                        name={`datetime${index}`}
+                        value={dateTime}
+                        onChange={(e) => handleDateTimeChange(index, e.target.value)}
+                        required
+                      />
+                    </div>
+                  ))}
                 {/* ... Other form rows for the first column */}
               </div>
 
               <div className={styles['form-column']}>
 
                 <div className={styles['form-row']}>
-                <label htmlFor="details">Details</label>
+                <label htmlFor="details">Description</label>
                   <textarea
                     id="details"
                     name="details"
                     value={formData.details}
                     onChange={handleChange}
-                    rows="12"
+                    rows="7"
                     cols="50"
                     required
                   ></textarea>
-               
+
+                <label htmlFor="qualifications">Qualifiation</label>
+                  <textarea
+                    id="qualifications"
+                    name="qualifications"
+                    value={formData.qualifications}
+                    onChange={handleChange}
+                    rows="7"
+                    cols="50"
+                    required
+                  ></textarea>
+
+                <label htmlFor="contacts">Contact</label>
+                  <textarea
+                    id="contacts"
+                    name="contacts"
+                    value={formData.contacts}
+                    onChange={handleChange}
+                    rows="7"
+                    cols="50"
+                    required
+                  ></textarea>
+
               
                 </div>
                 {/* ... Other form rows for the second column */}

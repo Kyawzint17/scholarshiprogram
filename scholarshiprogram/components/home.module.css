@@ -298,6 +298,15 @@
   gap: 10px; /* Adjust the gap as needed */
 }
 
+.input-wrapper {
+  margin-bottom: 10px; /* Adjust the margin as needed */
+}
+
+.add-button-wrapper {
+  margin-top: 10px; /* Adjust the margin as needed */
+}
+
+
 /* Register Home Buttons */
 
 .accept-button {
