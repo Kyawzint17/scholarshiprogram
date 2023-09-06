@@ -18,6 +18,8 @@ export default function Home() {
       image: '/workpost.png',
       title: 'Work 1',
       description: 'Work 1 Description',
+      hours: 'Work 1 Hours',
+      location: 'Work 1 Location',
       details: 'Work plays a crucial role in the lives of individuals and societies, serving as a means of livelihood, personal fulfillment, and societal progress. In the modern context, work encompasses a wide range of activities and professions, from traditional manual labor to intricate knowledge-based tasks. The nature of work has evolved with advancements in technology and changes in societal values, leading to diverse career paths and flexible work arrangements. While work provides financial stability, it also contributes to personal growth, skill development, and a sense of accomplishment. The balance between work and personal life has become increasingly important, as organizations and individuals strive to foster well-being and productivity. In this dynamic landscape, fostering a positive work environment, promoting work-life balance, and embracing continuous learning have emerged as key factors in shaping the modern work experience.',
       qualifications: 'Qualification information 1',
       contacts: 'Contact information 1',
@@ -27,6 +29,8 @@ export default function Home() {
       image: '/workpost.png',
       title: 'Work 2',
       description: 'Work 2 Description',
+      hours: 'Work 1 Hours',
+      location: 'Work 1 Location',
       details: 'Work 2 Detail',
       qualifications: 'Qualification information 2',
       contacts: 'Contact information 2',
@@ -61,7 +65,7 @@ export default function Home() {
                 />
               <div className={styles['work-details']}>
                 <div className={styles['work-title']}>{work.title}</div>
-                <div className={styles['work-description']}>{work.description}</div>
+                <div>{work.hours}</div>
               </div>
               </div>
             ))}
@@ -84,7 +88,8 @@ export default function Home() {
                 <img src={selectedWork.image} alt={`Image for ${selectedWork.title}`} style={{width: '100px', height: 'auto'}} />
               </div>
               <h2>{selectedWork.title}</h2>
-              <p>{selectedWork.description}</p>
+              <p>{selectedWork.hours}</p>
+              <p>{selectedWork.location}</p>
 
               <div className={styles['contact-section']}>
                 <div className={styles['title-container']}>
@@ -98,6 +103,11 @@ export default function Home() {
                     Details
                   </h3>
                 </div>
+                
+                <div className={styles['details-info']}>
+                  <h3>Description</h3>
+                  <p>{selectedWork.description}</p>
+                </div>      
 
                 <div className={styles['details-info']}>
                   <h3>Qualification</h3>

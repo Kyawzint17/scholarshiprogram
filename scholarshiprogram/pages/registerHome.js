@@ -16,7 +16,8 @@ export default function Register() {
         image: '/workpost.png',
         title: 'Work 1',
         description: 'Work 1 Description',
-        details: 'Work 1 Detail',
+        hours: 'Work 1 Hours',
+        location: 'Work 1 Location',
         qualifications: 'Qualification information 1',
         contacts: 'Contact information 1',
         studentApplied: [
@@ -31,7 +32,8 @@ export default function Register() {
         image: '/workpost.png',
         title: 'Work 2',
         description: 'Work 2 Description',
-        details: 'Work 2 Detail',
+        hours: 'Work 2 Hours',
+        location: 'Work 2 Location',
         qualifications: 'Qualification information 2', 
         contacts: 'Contact information 2',
         studentApplied: [
@@ -79,7 +81,7 @@ export default function Register() {
                   />
                 <div className={styles['work-details']}>
                   <div className={styles['work-title']}>{work.title}</div>
-                  <div className={styles['work-description']}>{work.description}</div>
+                  <div>{work.hours}</div>
                 </div>
                 </div>
               ))}
@@ -104,7 +106,8 @@ export default function Register() {
                 <img src={selectedWork.image} alt={`Image for ${selectedWork.title}`} style={{width: '100px', height: 'auto'}} />
               </div>
               <h2>{selectedWork.title}</h2>
-              <p>{selectedWork.description}</p>
+              <p>{selectedWork.hours}</p>
+              <p>{selectedWork.location}</p>
 
               <div className={styles['contact-section']}>
                 <div className={styles['title-container']}>
@@ -116,6 +119,11 @@ export default function Register() {
                   >
                     Details
                   </h3>
+                </div>
+
+                <div className={styles['details-info']}>
+                  <h3>Description</h3>
+                  <p>{selectedWork.description}</p>
                 </div>
 
                 <div className={styles['details-info']}>
