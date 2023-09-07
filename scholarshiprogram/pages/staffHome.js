@@ -3,9 +3,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import StaffNavbar from '@/components/staffNavbar';
-import CreateForm from '../components/Creatework';
-import Button from '../components/Button';
-import Modal from '../components/Modal';
+
 
 
 export default function Home() {
@@ -83,9 +81,6 @@ export default function Home() {
   return (
     <>
         <StaffNavbar />
-        <Button onClick={openModal} />
-        <Modal isOpen={isModalOpen} onClose={closeModal} />
-     
         <div className={styles.line} />
         <div className={styles['home-page']}>        
           <div className={styles['works-list']}>

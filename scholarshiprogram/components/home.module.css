@@ -245,66 +245,6 @@
   text-decoration: underline; /* Add your preferred active title color */
 }
 
-.modal{
-  background-color: rgb(9, 11, 9);
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(96, 93, 93, 0.988);
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(251, 247, 247);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.form-column {
-  float: left;
-  width: 50%;
-  box-sizing: border-box;
-  padding: 10px;
-}
-
-.form-button-container {
-  clear: both; /* Clear the float property to ensure proper clearing of columns */
-  text-align: center;
-}
-
-.form-row {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-}
-
-.form-row label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.form-row input,
-.form-row textarea {
-  width: 100%; /* Full width */
-  box-sizing: border-box;
-}
-
-.button-wrapper {
-  display: flex;
-  gap: 10px; /* Adjust the gap as needed */
-}
-
-.input-wrapper {
-  margin-bottom: 10px; /* Adjust the margin as needed */
-}
-
-.add-button-wrapper {
-  margin-top: 10px; /* Adjust the margin as needed */
-}
 
 
 /* Register Home Buttons */

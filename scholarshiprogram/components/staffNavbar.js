@@ -22,6 +22,11 @@ const StaffNavbar = () => {
             </Link>
             <Image src="/work_upload.png" alt="Another Image" width={35} height={35} />
           </div>
+          <div className={styles['text-container']}>
+          <Link href={'/create'}>
+          <div className={styles['text']}>Create Scholarship Work</div>
+          </Link>
+          </div>
         </div>
       </nav>
     );

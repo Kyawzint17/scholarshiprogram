@@ -5,10 +5,11 @@ import CreateNavBar from '@/components/createNavbar';
 
 export default function Create() {
   const [formData, setFormData] = useState({
+    picture: null,
     title: '',
     hours: '',
     students: '',
-    datetime: '',
+    datetime: [''], // Initialize with one empty date-time field
     location: '',
     details: '',
     qualification: '',
@@ -29,6 +30,41 @@ export default function Create() {
     }));
   };
 
+  const handlePictureChange = (event) => {
+    const file = event.target.files[0]; // Get the first selected file (if multiple files are allowed)
+    
+    // You can store the file in the form data or handle it as needed.
+    setFormData((prevData) => ({
+      ...prevData,
+      picture: file,
+    }));
+  };
+
+  const addDateTime = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      datetime: [...prevData.datetime, ''], // Add an empty date-time field
+    }));
+  };
+
+  const removeDateTime = (index) => {
+    const newDateTime = [...formData.datetime];
+    newDateTime.splice(index, 1); // Remove the date-time field at the specified index
+    setFormData((prevData) => ({
+      ...prevData,
+      datetime: newDateTime,
+    }));
+  };
+
+  const handleDateTimeChange = (index, value) => {
+    const newDateTime = [...formData.datetime];
+    newDateTime[index] = value;
+    setFormData((prevData) => ({
+      ...prevData,
+      datetime: newDateTime,
+    }));
+  };
+
   return (
     <>
       <CreateNavBar />
@@ -40,6 +76,16 @@ export default function Create() {
           <div className={styles['form-container']}>
             <form onSubmit={handleSubmit} className={styles['create-form']}>
               <div className={styles['form-column']}>
+
+                <label htmlFor="picture">Upload Picture</label>
+                <input
+                  type="file"
+                  id="picture"
+                  name="picture"
+                  accept="image/*" 
+                  onChange={handlePictureChange}  
+                />
+
                 <label htmlFor="title">Title</label>
                 <input
                   type="text"
@@ -60,25 +106,26 @@ export default function Create() {
                   required
                 />
 
-                <label htmlFor="students">Limited Students Number</label>
-                <input
-                  type="number"
-                  id="students"
-                  name="students"
-                  value={formData.students}
-                  onChange={handleChange}
-                  required
-                />
-
-                <label htmlFor="datetime">Date and Time of Work</label>
-                <input
-                  type="datetime-local"
-                  id="datetime"
-                  name="datetime"
-                  value={formData.datetime}
-                  onChange={handleChange}
-                  required
-                />
+                {/* Date and Time Inputs */}
+                {formData.datetime.map((dateTime, index) => (
+                  <div key={index}>
+                    <label htmlFor={`datetime${index}`}>Date and Time of Work {index + 1}</label>
+                    <input
+                      type="datetime-local"
+                      id={`datetime${index}`}
+                      name={`datetime${index}`}
+                      value={dateTime}
+                      onChange={(e) => handleDateTimeChange(index, e.target.value)}
+                      required
+                    />
+                    <button type="button" onClick={() => removeDateTime(index)}>
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                <button type="button" onClick={addDateTime}>
+                  Add Date and Time
+                </button>
 
                 <label htmlFor="location">Location of Work</label>
                 <input
@@ -97,7 +144,7 @@ export default function Create() {
                   value={formData.details}
                   onChange={handleChange}
                   rows="4"
-                  cols="50"
+                  cols="30"
                   required
                 ></textarea>
 
@@ -108,7 +155,7 @@ export default function Create() {
                   value={formData.qualification}
                   onChange={handleChange}
                   rows="4"
-                  cols="50"
+                  cols="30"
                   required
                 ></textarea>
 
@@ -118,8 +165,8 @@ export default function Create() {
                   name="contacts"
                   value={formData.contacts}
                   onChange={handleChange}
-                  rows="3"
-                  cols="20"
+                  rows="4"
+                  cols="30"
                   required
                 ></textarea>
               </div>
