@@ -113,7 +113,6 @@ export default function Profile() {
                       </div>
                     </div>
                     <div className={styles['work-status']}>
-                      <img src={entry.icon} alt={`${entry.status} Icon`} />
                       {entry.status}
                     </div>
                   </div>
