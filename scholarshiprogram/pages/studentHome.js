@@ -2,7 +2,6 @@ import Link from 'next/link';
 import styles from '../components/home.module.css';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import CreateForm from '../components/Creatework';
 
 
 export default function Home() {
@@ -29,8 +28,8 @@ export default function Home() {
       image: '/workpost.png',
       title: 'Work 2',
       description: 'Work 2 Description',
-      hours: 'Work 1 Hours',
-      location: 'Work 1 Location',
+      hours: 'Work 2 Hours',
+      location: 'Work 2 Location',
       details: 'Work 2 Detail',
       qualifications: 'Qualification information 2',
       contacts: 'Contact information 2',

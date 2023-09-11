@@ -56,7 +56,7 @@ export default function LoginPage() {
         </button>
         <button className={styles['registerbutton']}>
           <Link href ="/registerHome">
-              Register
+              Registrar
           </Link>
         </button>
         <button className={styles['staffbutton']}>

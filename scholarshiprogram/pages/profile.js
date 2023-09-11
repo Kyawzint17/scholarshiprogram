@@ -67,6 +67,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
+        <table className={styles['box']}></table>
         <div className={styles['detailSection']}>
           <div className={styles['topDetail']}>
             <div className={styles['hourContent']}>

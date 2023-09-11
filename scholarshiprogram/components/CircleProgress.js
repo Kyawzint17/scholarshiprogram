@@ -2,16 +2,24 @@ import styles from './home.module.css';
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, CardFooter, Chip, CircularProgress } from "@nextui-org/react";
 
-const CircularProgressCard = ({ value }) => {
+const CircularProgressCard = () => {
   const [progressValue, setProgressValue] = useState(0);
+  const progressLimit = 100; // Set your desired progress limit
 
+  // Function to manually update progress with a limit
+  const updateProgress = () => {
+    if (progressValue < progressLimit) {
+      const newValue = progressValue + 10;
+      setProgressValue(newValue > progressLimit ? progressLimit : newValue);
+    }
+  };
+
+  // Use a useEffect if you want to automatically update the progress
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgressValue((v) => (v >= value ? value : v + 1));
-    }, 1000 / value);
+    const interval = setInterval(updateProgress, 500);
 
     return () => clearInterval(interval);
-  }, [value]);
+  }, []);
 
   return (
     <Card className={styles["circular-progress-card"]}>
