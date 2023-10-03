@@ -10,7 +10,7 @@
   object-fit: cover;
   background-repeat: "no-repeat";
   background-size: cover;
-
+  
 }
 
 .h1 {
@@ -25,28 +25,37 @@
 }
 
 .login-container {
-  max-width: 400px;
-  padding: 20px;
+  width: 350px;
+  padding: 50px;
   background-color: #fefefe;
   border-radius: 4px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
+  /*display: flex;*/
   flex-direction: column;
-  justify-content: center; /* Horizontally center the content */
-  align-items: center; /* Vertically center the content */
 }
 
 .input-group {
-  display: flex; /* Use flexbox */
+  /*display: flex; /* Use flexbox */
   align-items: center; /* Align label and input vertically */
+  border-radius: 25px;
+  
+}
+
+
+.input-color {
+  background-color: white;
+  padding: 3px;
+  border-radius: 4px;
+
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 30px;
+
 }
 
 .loginbutton {
-  padding: 10px 80px;
+  padding: 10px 10px;
   background-color: #3e4854; /* Change this color to your desired button color */
   color: white;
   border: none;
@@ -78,12 +87,14 @@
   display: flex; /* Use flexbox */
   justify-content: space-between; /* Space buttons equally */
   margin-top: 20px;
+  
 }
 
 .login-heading {
   color: black;
   margin-left: 10px;
   display: flex;
+  font-size: 150%;
 }
 
 .login-content {
@@ -97,9 +108,4 @@
 
 .login-heading-container {
   flex: 1; /* Allow the container to expand and push the text to the right */
-}
-
-.custom-h2 {
-  color: black;
-  font-family:"Inter", sans-serif; /* Change "Arial" to the desired font-family */
 }

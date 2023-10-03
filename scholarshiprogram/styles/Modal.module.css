@@ -1,0 +1,100 @@
+/* Modal.module.css */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 70px 250px; /* Increase the padding for a bigger modal */
+    text-align: center;
+    position: relative; /* Add relative positioning */
+  }
+  
+  .modal h2 {
+    margin: 0;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+  }
+  
+  .modal form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .modal label {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .modal textarea {
+    width: 900%;
+    max-width: 600px; /* Increase the max-width for a wider textarea */
+    height: 200px; /* Increase the height for a taller textarea */
+    margin-bottom: 20px;
+    padding: 10px; /* Adjust the padding for better spacing */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    background-color: white;
+    color: black;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    justify-content: flex-end; /* Adjust to move buttons to the right */
+    margin-top: 10px; /* Adjust the margin-top to move the buttons down */
+  }
+  
+  .confirmButton {
+    background-color: #ff0000;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .cancelButton {
+    background-color: #ccc;
+    color: #fff;
+    padding: 10px 20px;
+    border: 1px solid gray;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .cancelButton:hover {
+    background-color: white;
+    color: black;
+    transition-duration: 0.5s;
+
+  }
+  
+  .closeButton {
+    position: absolute; /* Position the button absolutely within the modal */
+    top: 10px; /* Adjust the top position to your liking */
+    right: 10px; /* Adjust the right position to your liking */
+    background-color: transparent;
+    color: blue;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+  }

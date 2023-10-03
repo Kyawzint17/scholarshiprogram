@@ -1,0 +1,67 @@
+/* styles/Profile.module.css */
+
+.body{
+  background-color: white;
+  height: 100vh;
+  display: grid;
+  
+
+  
+}
+
+.container {
+  max-width: 36rem;
+  padding: 0 1rem;
+  margin: 3rem auto 6rem;
+
+}
+
+.backToHome{
+  margin: 3rem 0 0;
+}
+
+.profile-page {
+  background-color: white;
+  color: black;
+  display: flex;
+  padding: 0 1rem;
+  max-width: 36rem;
+  align-items: center; /* in-side container */
+  margin: 3rem auto 10rem;
+  border: 1px solid black;
+  /* Add left margin to move the profile to the left */
+
+}
+
+.profile-image img{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+
+.line {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 0;
+  }
+
+.textcolor {
+  color: black;
+  margin: 3rem auto 10rem;
+  
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

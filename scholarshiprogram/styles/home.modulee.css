@@ -1,0 +1,513 @@
+.home-page {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: 1px solid transparent;
+
+}
+
+.text {
+color:black;
+display: flex;
+margin-top: 10px;
+}
+
+.text2 {
+color:black;
+display: flex;
+margin-right: 10px;
+}
+
+.imge {
+position: absolute;
+top: 0;
+left: 0;
+margin-left: 6rem;
+border-radius: 25px;
+}
+
+.img {
+  border-radius: 25px;
+}
+
+.imge-container {
+margin-left: auto; /* Push the profile picture to the right side */
+display: flex;
+align-items: center;
+margin-right: 10px;
+border-radius: 25px;
+
+}
+
+.text-container {
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+}
+
+
+.navBar {
+background-color: white;
+padding: 1rem;
+}
+
+.li {
+margin: 0 1rem;
+}
+
+.ul {
+list-style: none;
+display: flex;
+justify-content: center;
+}
+
+.logo {
+display: flex; /* Add this to make the logo and text align horizontally */
+align-items: center; /* Vertically center the logo and text within the nav bar */
+margin-right: 1rem; /* Add spacing between the logo/text and links */
+}
+
+.logoText {
+margin-left: 0.5rem; /* Add spacing between the logo and text */
+color: #121111; /* Customize the text color */
+font-size: 1.2rem; /* Customize the text size */
+}
+
+.logoContainer {
+display: flex; /* Add this to make the logo and text appear on the same line */
+align-items: center; /* Vertically center the logo and text */
+}
+
+.right-items {
+display: flex;
+align-items: center;
+}
+
+.work-title {
+flex: 1;
+}
+
+.textwork {
+  border: 1px solid transparent;
+  padding: 20px 40px;
+  background-color: white;
+  color: black;
+  position: absolute;
+  left: 40px;
+
+
+}
+
+.works-list {
+color: #121111;
+display: flex;
+flex: 1; /* Take up remaining space */
+margin-right: 1rem; /* Add some spacing between the two sections */ 
+margin-left: 80px ;
+margin-top: 100px;
+
+
+}
+
+.vertical-line {
+  border-left:  1px solid gray;
+  height: 500px;
+}
+
+
+
+
+.work-item {
+  display: grid; /* Use flexbox for layout */
+  grid-template-columns: 13ch auto;
+  grid-template-rows: 16ch;
+  align-items: center; /* Vertically align content */
+  grid-gap: 10px;
+ 
+  
+}
+
+.work-item:focus {
+  border: 1px solid blue;
+  padding: auto;
+
+  
+}
+
+
+.work-content {
+display: flex;
+align-items: center;
+}
+
+.worksul {
+list-style: none;
+display: flex;
+justify-content: center;
+}
+
+.work-details {
+  padding: 20px; /* Add spacing around the content */
+  /* border: 1px solid #ccc;  Optional: Add a border for visual separation */
+  color: black;
+  flex: 2; /* Take up twice the space of the works list */
+  justify-content: center;
+
+}
+
+.no-works-message {
+flex: 1;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+height: 60vh;
+}
+
+.no-works-image {
+width: 500px; /* Adjust the width as needed */
+height: auto;
+margin-bottom: 10px; /* Add spacing between image and message */
+border-radius: 25px;
+}
+
+.line {
+border: 0;
+border-top: 1px solid #ccc;
+margin: 0;
+}
+
+/* Staff Home Page Buttons */
+.create-button {
+position: fixed;
+bottom: 20px;
+right: 20px;
+padding: 10px 10px;
+background-color: #3e4854; /* Change this color to your desired button color */
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.work-details-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.works-list .work-image {
+width: 100px; /* Adjust the width as needed */
+height: auto; /* Automatically adjust height to maintain aspect ratio */
+margin-right: 10px;
+}
+
+.apply-button {
+padding: 8px 32px;
+background-color: blue;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-size:  80%;
+}
+
+.close-button {
+padding: 6px 12px;
+background-color: transparent;
+color: blue;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-size: 90%;
+}
+
+.delete-button {
+padding: 6px 12px;
+background-color: #de1212;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.button-container {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.contact-section {
+margin-top: 20px;
+padding: 20px;
+border: 1px solid #ccc;
+}
+
+.contact-list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.contact-item {
+cursor: pointer;
+color: #3e4854;
+}
+
+.contact-info {
+margin-top: 10px;
+}
+
+.title-container {
+color: #121111;
+display: flex; /* Display the titles next to each other */
+gap: 10px; /* Add space between titles */
+margin-bottom: 10px; /* Add margin below the titles */
+}
+
+.qualification-info {
+margin-top: 20px;
+padding: 20px;
+border: 1px solid #ccc;
+
+}
+
+.details-info {
+margin-top: 20px;
+padding: 20px;
+border: 1px solid #ccc;
+}
+
+.first-info {
+margin-top: 20px;
+padding: 20px;
+border: 1px solid #ccc;
+}
+
+.active-title {
+cursor: pointer;
+text-decoration: underline; /* Add your preferred active title color */
+}
+
+
+
+/* Register Home Buttons */
+
+.accept-button {
+padding: 6px 12px;
+background-color: #1ac40e;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.reject-button {
+padding: 6px 12px;
+background-color: #de1212;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+/* Profile Components */
+
+.textProfile {
+  border: 1px solid transparent;
+  padding: 20px 40px;
+  background-color: white;
+  color: black;
+  position: relative;
+ /* margin: 10px 20px 15px 25px; /* top, right, bottom, left */
+ /* left: 40px;
+  top: 100px;
+  z-index: 2;*/
+}
+
+.box {
+  width: 50px;
+  
+  
+}
+
+.profileSection {
+border-radius: 25px;
+width: 350px;
+padding: 20px;
+border: 1px solid #ddd;
+background-color: white;
+position: relative;
+left: 50px;
+top: 120px;
+
+}
+
+.infoBox {
+  border: 1px solid #ccc; /* Add border or other styling as desired */
+  padding: 10px; /* Add padding as desired */
+  margin-top: 10px; /* Add margin as desired */
+}
+
+.infoTitle {
+  font-weight: bold; /* Make the title bold or adjust styling as desired */
+}
+
+.detailSection {
+flex: 1;
+padding: 10px 5px 10px 40px;
+border: 1px solid transparent;
+background-color: #ffffff;
+position: relative;
+}
+
+.profilePicture {
+margin-right: 10px;
+text-align: center; /* Center the image within its container */
+}
+
+
+.profilePictureContainer {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+}
+
+.profileContent {
+text-align: center;
+margin-top: 10px;
+font-weight: bold;
+color: #121111;
+}
+
+.topDetail {
+flex: 1;
+padding: 10px;
+border: 1px solid #ddd;
+background-color: white;
+margin-bottom: 10px;
+border-radius: 25px;
+}
+
+.bottomDetail {
+flex: 1;
+padding: 10px;
+border: 1px solid #ddd;
+background-color: #ffffff;
+border-radius: 25px;
+}
+
+.hourContent {
+text-align:left;
+margin-top: 10px;
+font-weight: bold;
+color: #121111;
+}
+
+.content-text {
+color: black /* Specify your desired text color here */;
+}
+
+
+.circular-progress-card {
+  width: 160px;
+  height: 160px;
+  border: none;
+  background: linear-gradient(to bottom right, white, white);
+  position: relative;
+}
+
+.progress-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0;
+}
+
+.circular-progress {
+  width: 150px;
+  height: 150px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+
+.progress-indicator {
+  stroke: blue;
+}
+
+.progress-track {
+  stroke: gray;
+  stroke-width: 1;
+}
+
+.progress-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+}
+
+.chip-container {
+  /* New container for the text chip */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1; /* Place above the progress track */
+}
+
+.chip {
+  width: auto;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  background-color: white(0, 0, 0, 0.7);
+  color: black;
+  border-radius: 4px;
+}
+
+.chip-content {
+  display: block;
+  margin: 0;
+}
+
+.work-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  
+}
+
+.work-image {
+  width: 80px; /* Adjust the width as needed */
+  height: 80px; /* Adjust the height as needed */
+  margin-right: 10px;
+}
+
+.work-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.work-title {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #121111;
+
+}
+
+.work-status {
+  display: flex;
+  align-items: center;
+  color: #121111;
+}
+
+.work-status img {
+  width: 20px; /* Adjust the width as needed */
+  height: 20px; /* Adjust the height as needed */
+  margin-right: 5px;
+}

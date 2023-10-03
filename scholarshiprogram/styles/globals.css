@@ -112,3 +112,38 @@ header {
   z-index: 10;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+body {
+  margin: 0;
+  line-height: normal;
+}
+:root {
+  /* fonts */
+  --font-inter: Inter;
+
+  /* font sizes */
+  --font-size-base: 16px;
+  --font-size-sm: 14px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-5xl: 24px;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-darkslategray: #4a4a4a;
+  --color-mediumslateblue: #3b4def;
+  --color-whitesmoke-100: #f1f1f1;
+  --color-whitesmoke-200: #ebebeb;
+
+  /* Gaps */
+  --gap-xs: 12px;
+  --gap-xl: 20px;
+  --gap-4xs: 9px;
+  --gap-9xs: 4px;
+  --gap-5xs: 8px;
+
+  /* border radiuses */
+  --br-10xs: 3px;
+  --br-7xs: 6px;
+  --br-xs: 12px;
+}

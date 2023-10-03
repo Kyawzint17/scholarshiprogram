@@ -11,7 +11,7 @@ const StaffNavbar = () => {
       <nav className={styles.navBar}>
         <div className={styles.logo}>
           <div className={styles.logoContainer}>
-            <Image src="/abac_logo.png" alt="Logo" width={40} height={40} />
+            <Image src="/abac_logo.png" alt="Logo" width={80} height={80} />
             <Link href={'/'}>
               <div className={styles.logoText}>
                 AU Scholarship

@@ -1,0 +1,443 @@
+.macbookAir23Child {
+  top: 169px;
+  left: 113px;
+  border-radius: var(--br-xs);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  width: 321px;
+  height: 442px;
+}
+.macbookAir23Child,
+.macbookAir23Inner,
+.macbookAir23Item {
+  position: absolute;
+  background-color: var(--color-white);
+}
+.macbookAir23Item {
+  top: 376px;
+  left: 458px;
+  border-radius: var(--br-xs);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  width: 709px;
+  height: 479px;
+}
+.macbookAir23Inner {
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 80px;
+}
+.image153Icon {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+.auScholar,
+.image153Icon {
+  position: relative;
+}
+.image153Parent {
+  position: absolute;
+  top: 16px;
+  left: 113px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  font-size: var(--font-size-5xl);
+  color: #000;
+}
+.lineDiv,
+.macbookAir23Child1 {
+  position: absolute;
+  box-sizing: border-box;
+}
+.lineDiv {
+  top: 79.5px;
+  left: -0.5px;
+  border-top: 1px solid #aaa;
+  width: 1281px;
+  height: 1px;
+}
+.macbookAir23Child1 {
+  top: 431px;
+  left: 457px;
+  border-top: 2px solid var(--color-whitesmoke-200);
+  width: 711px;
+  height: 2px;
+}
+.frameChild {
+  position: relative;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+.wadeWarren {
+  position: relative;
+  font-weight: 500;
+}
+.frameItem {
+  position: relative;
+  border-radius: 1px;
+  width: 18px;
+  height: 18px;
+}
+.ellipseParent,
+.wadeWarrenParent {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.ellipseParent {
+  position: absolute;
+  top: 16px;
+  left: 986px;
+  align-items: center;
+  gap: var(--gap-5xs);
+  color: var(--color-mediumslateblue);
+}
+.profile {
+  position: absolute;
+  top: 116px;
+  left: 113px;
+  font-size: var(--font-size-5xl);
+}
+.scholarshipWorks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 500;
+}
+.scholarshipWorksWrapper {
+  position: absolute;
+  top: 31px;
+  left: 821px;
+  width: 141px;
+  height: 19px;
+}
+.div,
+.editProfile {
+  position: absolute;
+  top: 406px;
+  left: 241px;
+}
+.editProfile {
+  top: 337px;
+  left: 238px;
+  font-size: var(--font-size-sm);
+  color: #589bff;
+}
+.groupChild {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--br-7xs);
+  background-color: var(--color-whitesmoke-100);
+  width: 257px;
+  height: 64px;
+}
+.vmsLogo1 {
+  position: relative;
+  width: 33px;
+  height: 40px;
+  object-fit: cover;
+}
+.scienceAndTechnoloyParent,
+.vmsLogo1Parent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.scienceAndTechnoloyParent {
+  flex-direction: column;
+  gap: 2px;
+}
+.vmsLogo1Parent {
+  position: absolute;
+  top: 12px;
+  left: 18px;
+  flex-direction: row;
+  gap: var(--gap-5xs);
+}
+.ellipseIcon,
+.rectangleParent {
+  position: absolute;
+  top: 441px;
+  left: 145px;
+  width: 257px;
+  height: 64px;
+}
+.ellipseIcon {
+  top: 219px;
+  left: 219px;
+  border-radius: 50%;
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+}
+.wadeWarren1 {
+  position: absolute;
+  top: 378px;
+  left: 208px;
+  font-size: var(--font-size-xl);
+}
+.groupItem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--br-7xs);
+  background-color: var(--color-whitesmoke-100);
+  width: 257px;
+  height: 48px;
+}
+.icoutlineMailIcon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.icoutlineMailParent {
+  position: absolute;
+  top: 12px;
+  left: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 17px;
+}
+.groupInner,
+.rectangleGroup {
+  position: absolute;
+  top: 513px;
+  left: 145px;
+  width: 257px;
+  height: 48px;
+}
+.groupInner {
+  top: 0;
+  left: 0;
+  border-radius: var(--br-xs);
+  background-color: var(--color-white);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  width: 329px;
+  height: 183px;
+}
+.scholarshipWorkHours {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-weight: 500;
+}
+.groupIcon {
+  position: absolute;
+  top: 56px;
+  left: 16px;
+  width: 111px;
+  height: 111px;
+}
+.span {
+  font-size: var(--font-size-base);
+}
+.div1 {
+  position: absolute;
+  top: 99px;
+  left: 42px;
+  font-weight: 500;
+  text-align: center;
+}
+.appliedWorks,
+.history,
+.rectangleContainer {
+  position: absolute;
+  font-size: var(--font-size-xl);
+}
+.rectangleContainer {
+  top: 169px;
+  left: 458px;
+  width: 329px;
+  height: 183px;
+}
+.appliedWorks,
+.history {
+  top: 392px;
+  font-weight: 500;
+}
+.appliedWorks {
+  left: 474px;
+  color: var(--color-mediumslateblue);
+}
+.history {
+  left: 656px;
+}
+.macbookAir23Child3 {
+  position: absolute;
+  top: 431px;
+  left: 473px;
+  border-top: 2px solid var(--color-mediumslateblue);
+  box-sizing: border-box;
+  width: 138px;
+  height: 2px;
+}
+.image19Icon {
+  position: relative;
+  border-radius: var(--br-7xs);
+  width: 122px;
+  height: 122px;
+  object-fit: cover;
+}
+.anyMechanicalKeyboard {
+  margin: 0;
+}
+.phclockParent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-9xs);
+}
+.rectangleDiv {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--br-10xs);
+  background-color: #7cf890;
+  width: 80px;
+  height: 25px;
+}
+.accepted {
+  top: 4px;
+  left: 6px;
+}
+.accepted,
+.div3,
+.groupDiv {
+  position: absolute;
+}
+.groupDiv {
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 25px;
+}
+.div3 {
+  top: 4px;
+  left: 88px;
+  font-size: var(--font-size-base);
+  color: var(--color-darkslategray);
+}
+.groupParent {
+  position: relative;
+  width: 179px;
+  height: 25px;
+  font-size: var(--font-size-sm);
+  color: #009420;
+}
+.anyMechanicalKeyboardEnthusParent,
+.frameGroup,
+.image19Parent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.frameGroup {
+  gap: var(--gap-4xs);
+  font-size: var(--font-size-base);
+}
+.anyMechanicalKeyboardEnthusParent,
+.image19Parent {
+  gap: var(--gap-xl);
+}
+.image19Parent {
+  flex-direction: row;
+  gap: var(--gap-xs);
+}
+.groupChild1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--br-10xs);
+  background-color: #f5f87c;
+  width: 69px;
+  height: 25px;
+}
+.pending {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  display: inline-block;
+  width: 57px;
+}
+.rectangleParent1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 69px;
+  height: 25px;
+}
+.div5 {
+  position: absolute;
+  top: 4px;
+  left: 77px;
+  font-size: var(--font-size-base);
+  color: var(--color-darkslategray);
+}
+.groupContainer {
+  position: relative;
+  width: 168px;
+  height: 25px;
+  font-size: var(--font-size-sm);
+  color: #948e00;
+}
+.groupChild2 {
+  border-radius: var(--br-10xs);
+  background-color: #f87c7c;
+}
+.groupChild2,
+.rectangleParent2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 73px;
+  height: 25px;
+}
+.div7 {
+  position: absolute;
+  top: 4px;
+  left: 81px;
+  font-size: var(--font-size-base);
+  color: var(--color-darkslategray);
+}
+.groupParent1 {
+  position: relative;
+  width: 172px;
+  height: 25px;
+  font-size: var(--font-size-sm);
+  color: #940000;
+}
+.frameParent {
+  position: absolute;
+  top: 450px;
+  left: 475px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+  font-size: var(--font-size-lg);
+}
+.macbookAir23 {
+  position: relative;
+  background-color: var(--color-white);
+  width: 100%;
+  height: 832px;
+  text-align: left;
+  font-size: var(--font-size-base);
+  color: var(--color-darkslategray);
+  font-family: var(--font-inter);
+}

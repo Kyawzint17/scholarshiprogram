@@ -18,7 +18,7 @@ const NavBar = () => {
     <nav className={styles.navBar}>
       <div className={styles.logo}>
         <div className={styles.logoContainer}>
-          <Image src="/abac_logo.png" alt="Logo" width={40} height={40} />
+          <Image src="/abac_logo.png" alt="Logo" width={80} height={80} />
           <div className={styles.logoText}>
             AU Scholarship
           </div>
@@ -27,7 +27,7 @@ const NavBar = () => {
         <Link href={'/'}>
         <div  className={styles['text2']}>Log Out</div>
         </Link>
-        <Image src="/profile_pic.png" alt="Another Image" width={35} height={35} />
+        <Image src="/profile_red.png" alt="Another Image" width={35} height={35} style={{ borderRadius: '50%' }}/>
         </div>
         <div className={styles['text-container']}>
         <Link href={'/profile'}>

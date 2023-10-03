@@ -3,7 +3,7 @@
 .create-page {
     background-color: white;
     min-height: 100vh;
-    display: flex;
+    
     justify-content: center;
     align-items: center;
     border: 1px solid black;
@@ -12,18 +12,19 @@
   .create-text {
     text-align: center;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     color: black;
   }
   
+
+
   .form-container {
-    display: flex;
     justify-content: center;
     color: black;
   }
   
   .form-column {
-    display: flex;
+    
     flex-direction: column;
     width: 100%;
     padding: 0 10px;
@@ -47,7 +48,7 @@
   }
   
   .left-column {
-    display: flex;
+    
     flex-direction: column;
     width: 50%;
     padding: 0 10px;
@@ -55,9 +56,48 @@
   }
   
   .right-column {
-    display: flex;
+    
     flex-direction: column;
     width: 50%;
     padding: 0 10px;
   }
   
+
+  .upload-pic {
+    border-radius: 25px;
+  width: 350px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: white;
+  position: relative;
+  left: 50px;
+  top: 120px;
+  }
+
+  .container-title {
+    display: grid;
+  }
+
+  .container-schoolhour {
+    display: grid;
+  }
+
+  .coniner-datetine {
+    display: grid;
+  }
+
+  .conatiner-location {
+    display: grid;
+  }
+
+  .conatiner-deatils {
+    display: grid;
+  }
+
+  .conatiner-qualification {
+    display: grid;
+  }
+  
+  .conatiner-contact {
+    display: grid;
+  }
