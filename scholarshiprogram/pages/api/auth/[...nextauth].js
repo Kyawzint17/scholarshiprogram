@@ -89,4 +89,3 @@ export const authOptions = {
 };
 export default NextAuth(authOptions);
 
-// return refreshAccessToken(token);
