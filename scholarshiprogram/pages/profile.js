@@ -1,49 +1,51 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProfileNavbar from '/components/profileNavbar';
-import styles from '../components/home.module.css'
-import {CircularProgress, Card, CardBody, CardFooter, Chip} from "@nextui-org/react";
-import CircularProgressCard from '@/components/CircleProgress';
+import styles from '../components/home.module.css';
 import { useSession } from 'next-auth/react';
 
-// Inside your component
-// ...
-
 export default function Profile() {
-  const [value, setValue] = React.useState(0);
-  const [selectedAppliedList, setSelectedAppliedList] = useState(true); // Set this to true by default
-  const [selectedHistory, setSelectedHistory] = useState(false);
   const { data, status } = useSession();
+  const [works, setWorks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [works, setWorks] = useState([
-    {
-      id: 1,
-      image: '/workpost.png',
-      title: 'Work 1',
-      hours: '60 hours',
-      appliedList: [
-        { status: 'Accepted', icon: '/applied.png' },
-        { status: 'Pending', icon: '/not_applied.png' },
-        { status: 'Rejected', icon: '/not_applied.png' },
-        // Add more work entries with images and status
-      ],
-      history: [
-        { status: 'Completed', icon: '/completed.png' },
-        { status: 'Incompleted', icon: '/not_applied.png' },
-        // Add more work entries with images and status
-      ],
-      
-    },
-  ]);
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setValue((v) => (v >= 100 ? 0 : v + 10));
-    }, 500);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await res.json();
+        setWorks(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      }
+    };
 
-    return () => clearInterval(interval);
+    fetchData();
   }, []);
 
+  const uniqueSemesters = [...new Set(works.map(work => work.semester))];
+
+  const totalHoursBySemester = uniqueSemesters.reduce((acc, semester) => {
+    const totalHours = works
+      .filter(work => work.semester === semester)
+      .filter(work => work.workStatus === "Accepted")
+      .reduce((sum, work) => {
+        const completedHours = work.studentList.reduce((sum, student) => {
+          if (student.status === 'Completed') {
+            return sum + (work.hours || 0);
+          }
+          return sum;
+        }, 0);
+        return sum + completedHours;
+      }, 0);
+    return { ...acc, [semester]: totalHours };
+  }, {});
 
   return (
     <>
@@ -58,7 +60,6 @@ export default function Profile() {
             <Image src="/profile_pic.png" className={styles['profilePicture']} alt="Profile Picture" width={100} height={100} />
           </div>
           <div className={styles['profileContent']}>
-            
             <div className={styles['infoBox']}>
               <div className={styles['infoTitle']}>
                 {` ${data.user?.name}`}
@@ -73,79 +74,70 @@ export default function Profile() {
         </div>
         <table className={styles['box']}></table>
         <div className={styles['detailSection']}>
-          <div className={styles['topDetail']}>
-            <div className={styles['hourContent']}>
-              Scholarship work hours 1/2023   
-            </div>
-            <div>
-              <CircularProgressCard value={value} />
-            </div>
-          </div>
           <div className={styles['bottomDetail']}>
             <div className={styles['title-container']}>
-              <h3
-                className={selectedAppliedList ? styles['active-title'] : ''}
-                onClick={() => {
-                  setSelectedAppliedList(true);
-                  setSelectedHistory(false);
-                }}
-              >
-                Applied List
-              </h3>
-              <h3
-                className={!selectedAppliedList ? styles['active-title'] : ''}
-                onClick={() => {
-                  setSelectedAppliedList(false);
-                  setSelectedHistory(true);
-                }}
-              >
-                History
+              <h3>
+                Work History
               </h3>
             </div>
-            {selectedAppliedList ? (
-              <div className={styles['details-info']}>
-              <div className={styles['qualification-info']}>
-                {works[0].appliedList.map((entry, index) => (
-                  <div key={index} className={styles['work-entry']}>
-                    <div className={styles['work-image']}>
-                      <img src={works[0].image} alt={`Work ${index + 1}`} />
-                    </div>
-                    <div className={styles['work-title']}>
-                      <div>
-                      {works[0].title}
-                      </div>
-                      <div>
-                      {works[0].hours}
-                      </div>
-                    </div>
-                    <div className={styles['work-status']}>
-                      {entry.status}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              </div>
+
+            {/* Display unique semesters and corresponding works */}
+            {isLoading ? (
+              <div>Loading...</div>
             ) : (
-              <div className={styles['details-info']}>
-                {works[0].history.map((entry, index) => (
-                  <div key={index} className={styles['work-entry']}>
-                    <div className={styles['work-image']}>
-                      <img src={works[0].image} alt={`Work ${index + 1}`} />
-                    </div>
-                    <div className={styles['work-title']}>
-                      <div>
-                      {works[0].title}
+              uniqueSemesters.map(semester => (
+                <div key={semester}>
+                  {works
+                    .filter(work => work.semester === semester) // Filter works by semester
+                    .filter(work => work.workStatus === "Accepted") // Display only works with "Accepted" status
+                    .some(work => work.studentList.some(student => student.status === 'Completed' || student.status === 'Incompleted'))
+                    ? (
+                      <div className={styles['details-info']}>
+                        <h3 className={styles['textwork2']}>
+                            {semester} | Total Hours: {totalHoursBySemester[semester]} / 60
+                        </h3>
+                        <div className={styles['details-info']}>
+                          {works
+                            .filter(work => work.semester === semester) // Filter works by semester
+                            .filter(work => work.workStatus === "Accepted") // Display only works with "Accepted" status
+                            .filter(work => work.studentList.some(student => student.status === 'Completed' || student.status === 'Incompleted'))
+                            .map(work => (
+                              <div key={work._id} className={styles['work-entry']}>
+                                <div className={styles['work-image']}>
+                                  <img src={work.picture} alt={`Work ${work.id}`} />
+                                </div>
+                                <div className={styles['work-title']}>
+                                  <div>{work.title}</div>
+                                  <div className={styles['unbold']}>
+                                    <ul>
+                                      <li>
+                                        {work.start} to {work.end}
+                                        {work.hours && (
+                                          <span> | Scholarship Hours: {work.hours}</span>
+                                        )}
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div className={styles['work-status']}>
+                                  <div>
+                                    {work.studentList
+                                      .filter(student => student.status === 'Completed' || student.status === 'Incompleted')
+                                      .map((student, idx) => (
+                                        student.studentName === data?.user?.name ? (
+                                          <span key={idx}>{student.status}</span>
+                                        ) : null
+                                      ))}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
                       </div>
-                      <div>
-                      {works[0].hours}
-                      </div>
-                    </div>
-                    <div className={styles['work-status']}>
-                      {entry.status}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    ) : null
+                  }
+                </div>
+              ))
             )}
           </div>
         </div>

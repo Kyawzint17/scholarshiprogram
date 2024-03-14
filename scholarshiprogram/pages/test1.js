@@ -14,7 +14,6 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [semesterFilter, setSemesterFilter] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,18 +45,9 @@ export default function Register() {
     return work.workStatus === selectedStatus;
   }) : [];
 
-  
   const handleStatusClick = (status) => {
     setSelectedStatus(status);
   };
-
-  const handleSemesterFilterChange = (e) => {
-    setSemesterFilter(e.target.value);
-  };
-
-  const filteredWorksBySemester = semesterFilter
-    ? works.filter(work => work.semester === semesterFilter)
-    : works;
 
   const handleCloseClick = () => {
     setSelectedWork(null); // Reset selectedWork when the Close button is clicked
@@ -107,12 +97,6 @@ export default function Register() {
   };
 
   const handleAccept = () => {
-    if (selectedWork.workStatus === 'Rejected') {
-      console.error('Cannot accept a work with "Rejected" status');
-      alert('Cannot accept a work with "Rejected" status');
-      return;
-    }
-
     updateWorkStatus(selectedWork._id, 'Accepted')
       .then(() => {
         // Update local state only after successful response from the API
@@ -120,35 +104,18 @@ export default function Register() {
           work._id === selectedWork._id ? { ...work, workStatus: 'Accepted' } : work
         );
         setWorks(updatedWorks);
-        alert('Work Approved Success');
       })
       .catch((error) => {
         console.error('Error accepting work:', error);
-
         // Handle error
       });
   };
 
   const handleReject = () => {
-    if (selectedWork.workStatus === 'Accepted') {
-      console.error('Cannot reject a work with "Accepted" status');
-      alert('Cannot reject a work with "Accepted" status');
-      return;
-    }
-  
-    updateWorkStatus(selectedWork._id, 'Rejected')
-      .then(() => {
-        // Update local state only after successful response from the API
-        const updatedWorks = works.map((work) =>
-          work._id === selectedWork._id ? { ...work, workStatus: 'Rejected' } : work
-        );
-        setWorks(updatedWorks);
-        alert('Work Rejected Success');
-      })
-      .catch((error) => {
-        console.error('Error rejecting work:', error);
-        // Handle error
-      });
+    // Perform the rejection logic here
+    // For example, you can make an API call to update the work status
+    // After rejection, close the modal
+    closeRejectModal();
   };
 
   return (
@@ -156,23 +123,12 @@ export default function Register() {
       <RegisterNavbar />
 
       <div className={styles.line} />
-      <div className={styles['work-header']}>
-        <h1 className={styles['textwork']}>WORK</h1>
-        {/* Semester Filter Input */}
-        <input
-          type="text"
-          placeholder="Enter semester (e.g., 2/2023)"
-          value={semesterFilter}
-          onChange={handleSemesterFilterChange}
-          className={styles['semester-filter-input']}
-        />
-      </div>
+      <h1 className={styles['textwork']}>
+        WORK
+      </h1>
       <div className={styles['home-page']}>
         <div className={styles['works-list']}>
-        {filteredWorksBySemester.length === 0 ? (
-          <div className={styles['no-works-message']}>---------- Work not available ----------</div>
-        ) : (
-        filteredWorksBySemester.map((work) => ( // Change works to filteredWorks
+          {filteredWorks.map((work) => ( // Change works to filteredWorks
             <div
               key={work._id}
               onClick={() => handleWorkClick(work._id)}
@@ -186,10 +142,10 @@ export default function Register() {
               />
               <div className={styles['work-details']}>
                 <div className={styles['work-title']}>{work.title}</div>
-                <div>Term {work.semester}</div>
+                <div>{work.hours} Hours</div>
               </div>
             </div>
-          )))}
+          ))}
         </div>
         <div className={styles['vertical-line']}></div>
         <div className={styles['work-details']}>
@@ -199,7 +155,7 @@ export default function Register() {
                 <button className={styles['accept-button']} onClick={handleAccept}>
                   Accept
                 </button>
-                <button className={styles['reject-button']} onClick={handleReject}>
+                <button className={styles['reject-button']} onClick={openRejectModal}>
                   Reject
                 </button>
 
@@ -231,11 +187,7 @@ export default function Register() {
                     </div>
                 </ul>
               </div>
-              <div className={styles['contact-section']}>
-                <div className={styles['title-container']}>
-                    <h3>Limit No of Student: {selectedWork.limit}</h3>
-                </div>
-              </div>          
+
               <div className={styles['contact-section']}>
                 <div className={styles['title-container']}>
                   <h3

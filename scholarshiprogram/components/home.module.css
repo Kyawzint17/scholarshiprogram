@@ -8,6 +8,10 @@
 
 }
 
+.unbold {
+  font-weight: normal; /* This sets the font weight to normal (unbold) */
+}
+
 .text {
   color: white;
   display: flex;
@@ -98,16 +102,56 @@
   flex: 1;
 }
 
+.work-header {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  color: #000;
+  border: 1px solid transparent;
+  left: 40px;
+  position: absolute;
+  padding: 20px 40px;
+}
+
 .textwork {
+  margin-bottom: 5px; /* Adjust margin bottom as needed */
+}
+
+.textwork2{
+  color:#000
+}
+
+.semester-filter-input {
+  width: 200px;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.semester-filter-input:focus {
+  outline: none;
+  border-color: #ff0000; /* Change border color when input is focused */
+}
+
+.text1work {
   border: 1px solid transparent;
   padding: 20px 40px;
-  background-color: white;
   color: black;
   position: absolute;
   left: 40px;
-
-
 }
+
+.semester-filter-input {
+  width: 200px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+  padding: 5px; /* Adjust the padding as needed */
+  border: 1px solid #ccc; /* Add border color */
+  border-radius: 5px; /* Add border radius */
+}
+
 
 .works-list {
   color: #121111;
@@ -117,8 +161,6 @@
   /* Add some spacing between the two sections */
   margin-left: 80px;
   margin-top: 100px;
-
-
 }
 
 .vertical-line {
@@ -287,9 +329,19 @@
 }
 
 
-.delete-button {
+.Delete-button {
   padding: 8px 32px;
   background-color: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 80%;
+}
+
+.share-button {
+  padding: 8px 32px;
+  background-color: green;
   color: white;
   border: none;
   border-radius: 4px;
@@ -380,7 +432,6 @@
 }
 
 .first-info {
-
   color: #121111;
   display: contents;
   /* Display the titles next to each other */
@@ -390,7 +441,6 @@
   margin-top: 20px;
   padding: 20px;
   border: 1px solid transparent;
-
 }
 
 .list-info {
@@ -405,8 +455,37 @@
   margin-top: 20px;
   padding: 20px;
   border: 1px solid #ccc;
+ 
+
+}
+
+.approval-info {
+  color: #121111;
+  display: grid;
+  /* Display the titles next to each other */
+  grid-template-columns: auto auto;
+  gap: 20px;
+  /* Add space between titles */
+  margin-bottom: 10px;
+  /* Add margin below the titles */
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
   text-align: center;
 
+}
+
+.status-table{
+  display: grid;
+  /* Display the titles next to each other */
+  gap: 20px;
+  /* Add space between titles */
+  margin-bottom: 10px;
+  /* Add margin below the titles */
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  
 }
 
 .select-list {
@@ -441,8 +520,6 @@
   gap: 15px;
   
 }
-
-
 
 /* Register Home Buttons */
 
@@ -480,8 +557,6 @@
 
 .box {
   width: 50px;
-
-
 }
 
 .profileSection {
@@ -678,4 +753,139 @@
   height: 20px;
   /* Adjust the height as needed */
   margin-right: 5px;
+}
+
+.work-section {
+  text-align: center;
+}
+
+/* Add these styles to your CSS module */
+.table-container {
+  margin-top: 20px;
+}
+
+.works-table th,
+.works-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.works-table th {
+  background-color: #f2f2f2;
+}
+
+.works-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.works-table td {
+  cursor: pointer;
+}
+
+.works-table td:first-child {
+  font-weight: bold;
+}
+
+.works-table td .chip {
+  margin-left: 5px;
+}
+
+.works-table td .chip.pending {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.works-table td .chip.accepted {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.works-table td .chip.rejected {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Add these styles to your CSS module */
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh; /* Adjust the height as needed */
+}
+
+
+/* Student applied edition */
+.student-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Adjust as needed */
+  margin-right: 0px;
+}
+
+.button-group {
+  display: flex;
+  width: 80%;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 10px; /* Adjust as needed */
+}
+
+.button-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Adjust as needed */
+  margin-right: 100px;
+}
+
+.name-section {
+  width: 120%; /* Adjust width as needed */
+  float: left; /* Float left to align with action-section */
+}
+
+.action-section {
+  width: 180%; /* Adjust width as needed */
+  float: right; /* Float right to align with name-section */
+}
+
+/* Work status button */
+
+.status-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.status-buttons button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.status-buttons button:hover {
+  background-color: #45a049;
+}
+
+.filter-message {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #121111;
+}
+
+.semester-filter-input {
+  width: 200px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+  padding: 5px; /* Adjust the padding as needed */
+  border: 1px solid #ccc; /* Add border color */
+  border-radius: 5px; /* Add border radius */
 }

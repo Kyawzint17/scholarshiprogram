@@ -1,256 +1,399 @@
 import styles from '../components/home.module.css';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import StaffNavbar from '/components/StaffNavbar';
-import modal from '../components/Modal'
-
-import StudentModal from '../components/ModalStudent';
+import Link from 'next/link'; // Import Link component from Next.js
+import StaffNavbar from '/components/staffNavbar';
 import DeleteModal from '../components/DeleteModal'; // Import your DeleteModal component
 
-
-import { columns, rows } from '../DB/data'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, user, avatar } from "@nextui-org/react";
-
-
-const statusColorMap = {
-  accpet: "Accepted",
-  pending: "pending",
-  reject: "rejected",
-};
-
-const studentData = {
-  id: 1,
-  name: 'John Doe',
-  profile: 'Student Profile 1',
-  username: 'johndoe123',
-  email: 'johndoe@example.com',
-};
-
 export default function Home() {
-
-  const [isCreateFormVisible, setCreateFormVisible] = useState(false);
+  const [works, setWorks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedWork, setSelectedWork] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
   const [selectedStudentApplied, setSelectedStudentApplied] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for the delete modal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [semesterFilter, setSemesterFilter] = useState('');
 
-  const [selectedStudent, setSelectedStudent] = useState(null); // Add this line to define the selectedStudent state
+  const [appliedStudents, setAppliedStudents] = useState([]);
+  const [progressStudents, setProgressStudents] = useState([]);
 
-  const [isStudentModalOpen, setStudentModalOpen] = useState(false);
-
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-
-
-  const openDeleteModal = () => {
-    setIsDeleteModalOpen(true);
-  };
-
-  // Function to close the delete modal
-  const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false);
-  };
-
-  const [works, setWorks] = useState([
-    {
-      id: 1,
-      image: '/workpost.png',
-      title: 'Work 1',
-      description: 'Work 1 Description',
-      hours: 'Work 1 Hours',
-      dateTimes: [
-        {
-          startDate: '2023-10-01',
-          startTime: '09:00 AM',
-          endDate: '2023-10-01',
-          endTime: '02:00 PM',
-          scholarshipHours:'5 hours',
-        },
-        {
-          startDate: '2023-10-02',
-          startTime: '08:00 AM',
-          endDate: '2023-10-02',
-          endTime: '10:00 AM',
-          scholarshipHours:'2 hours',
-        },
-      ],
-      location: 'Work 1 Location',
-      qualifications: 'Qualification information 1',
-      contacts: 'Contact information 1',
-      studentApplied: [
-        { info: 'Anwar Rasheed' },
-      ],
-      studentProgress: [
-        { info: 'Anwar Rasheed' },
-      ],
-    },
-    {
-      id: 2,
-      image: '/workpost.png',
-      title: 'Work 2',
-      description: 'Work 2 Description',
-      hours: 'Work 2 Hours',
-      dateTimes: [
-        {
-          startDate: '2023-10-03',
-          startTime: '09:00 AM',
-          endDate: '2023-10-04',
-          endTime: '02:00 PM',
-          scholarshipHours:'5 hours',
-        },
-        {
-          startDate: '2023-10-05',
-          startTime: '08:00 AM',
-          endDate: '2023-10-06',
-          endTime: '10:00 AM',
-          scholarshipHours: '2 hours',
-        },
-      ],
-      location: 'Work 2 Location',
-      qualifications: 'Qualification information 2',
-      contacts: 'Contact information 2',
-      studentApplied: [
-        { info: 'Kyaw Zin Thein' },
-      ],
-      studentProgress: [
-        { info: 'Kyaw Zin Thein' },
-      ],
-    },
-  ]);
-
-  const openStudentModal = (student) => {
-    setSelectedStudent(student);
-    setStudentModalOpen(true);
-  };
-
-  const closeStudentModal = () => {
-    setSelectedStudent(null);
-    setStudentModalOpen(false);
-  };
-
-
-  const renderCell = React.useCallback((users, columnKey) => {
-    const cellValue = users[columnKey];
-
-    switch (columnKey) {
-      case "name":
-        return (
-          <User
-            description={user.email}
-            name={cellValue}
-          ></User>
-        )
-      case "status":
-        return <div className={styles['work-description']}>{cellValue}</div>;
-      case "hour":
-        return <div className={styles['work-scholarhour']}>{cellValue}</div>;
-      default:
-        return cellValue;
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await res.json();
+        setWorks(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      }
+    };
+  
+    fetchData();
   }, []);
+  
+  const acceptStudent = async (id) => {
+    console.log("acceptStudent function called with student ID:", id);
+    console.log("Selected work:", selectedWork);
+  
+    if (!selectedWork) {
+      console.error("Work not found");
+      alert("Work not found");
+      return;
+    }
+  
+    // Find the student in the studentList array within the selectedWork
+    const acceptedStudent = selectedWork.studentList.find((student) => student._id.toString() === id);
+  
+    if (!acceptedStudent) {
+      console.error("Student not found");
+      alert("Student not found");
+      return;
+    }
+  
+    // Update the status of the accepted student to 'Accepted'
+    const updatedStudentList = selectedWork.studentList.map((student) =>
+      student._id.toString() === id ? { ...student, status: 'Accepted' } : student
+    );
+  
+    // Update the selectedWork state with the updated studentList
+    setSelectedWork((prevSelectedWork) => ({
+      ...prevSelectedWork,
+      studentList: updatedStudentList,
+    }));
+  
+    // Send a PUT request to the server to update the student status
+    try {
+      const response = await fetch(`/api/scholarshipWork/${selectedWork._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          studentList: updatedStudentList,
+        }),
+      });
+  
+      if (!response.ok) {
+        const { message } = await response.json();
+        console.error(message);
+        alert(message);
+      } else {
+        console.log('Student status updated on the server');
+        alert('Student has been accepted');
+      }
+    } catch (error) {
+      console.error('Failed to update student status on the server:', error);
+      alert('Failed to update student status on the server');
+    }
+  };
+  
+  
 
+  const declineStudent = async (id) => {
+    console.log("acceptStudent function called with student ID:", id);
+    console.log("Selected work:", selectedWork);
+  
+    if (!selectedWork) {
+      console.error("Work not found");
+      alert("Work not found");
+      return;
+    }
+  
+    // Find the student in the studentList array within the selectedWork
+    const rejectedStudent = selectedWork.studentList.find((student) => student._id.toString() === id);
+  
+    if (!rejectedStudent) {
+      console.error("Student not found");
+      alert("Student not found");
+      return;
+    }
+  
+    // Update the status of the accepted student to 'Accepted'
+    const updatedStudentList = selectedWork.studentList.map((student) =>
+      student._id.toString() === id ? { ...student, status: 'Rejected' } : student
+    );
+  
+    // Update the selectedWork state with the updated studentList
+    setSelectedWork((prevSelectedWork) => ({
+      ...prevSelectedWork,
+      studentList: updatedStudentList,
+    }));
+  
+    // Send a PUT request to the server to update the student status
+    try {
+      const response = await fetch(`/api/scholarshipWork/${selectedWork._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          studentList: updatedStudentList,
+        }),
+      });
+  
+      if (!response.ok) {
+        const { message } = await response.json();
+        console.error(message);
+        alert(message);
+      } else {
+        console.log('Student status updated on the server');
+        alert('Student has been declined');
+      }
+    } catch (error) {
+      console.error('Failed to update student status on the server:', error);
+      alert('Failed to update student status on the server');
+    }
+  };
 
+  const completeStudent = async (id) => {
+    console.log("completeStudent function called with student ID:", id);
+    console.log("Selected work:", selectedWork);
+  
+    if (!selectedWork) {
+      console.error("Work not found");
+      alert("Work not found");
+      return;
+    }
+  
+    // Find the student in the studentList array within the selectedWork
+    const studentToComplete = selectedWork.studentList.find((student) => student._id.toString() === id);
+  
+    if (!studentToComplete) {
+      console.error("Student not found");
+      alert("Student not found");
+      return;
+    }
+  
+    // Update the status of the student to 'Completed'
+    const updatedStudentList = selectedWork.studentList.map((student) =>
+      student._id.toString() === id ? { ...student, status: 'Completed' } : student
+    );
+  
+    // Update the selectedWork state with the updated studentList
+    setSelectedWork((prevSelectedWork) => ({
+      ...prevSelectedWork,
+      studentList: updatedStudentList,
+    }));
+  
+    // Send a PUT request to the server to update the student status
+    try {
+      const response = await fetch(`/api/scholarshipWork/${selectedWork._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          studentList: updatedStudentList,
+        }),
+      });
+  
+      if (!response.ok) {
+        const { message } = await response.json();
+        console.error(message);
+        alert(message);
+      } else {
+        console.log('Student status updated on the server');
+        alert('Student has completed the work');
+      }
+    } catch (error) {
+      console.error('Failed to update student status on the server:', error);
+      alert('Failed to update student status on the server');
+    }
+  };
+
+  const incompleteStudent = async (id) => {
+    console.log("acceptStudent function called with student ID:", id);
+    console.log("Selected work:", selectedWork);
+  
+    if (!selectedWork) {
+      console.error("Work not found");
+      alert("Work not found");
+      return;
+    }
+  
+    // Find the student in the studentList array within the selectedWork
+    const acceptedStudent = selectedWork.studentList.find((student) => student._id.toString() === id);
+  
+    if (!acceptedStudent) {
+      console.error("Student not found");
+      alert("Student not found");
+      return;
+    }
+  
+    // Update the status of the accepted student to 'Accepted'
+    const updatedStudentList = selectedWork.studentList.map((student) =>
+      student._id.toString() === id ? { ...student, status: 'Incompleted' } : student
+    );
+  
+    // Update the selectedWork state with the updated studentList
+    setSelectedWork((prevSelectedWork) => ({
+      ...prevSelectedWork,
+      studentList: updatedStudentList,
+    }));
+  
+    // Send a PUT request to the server to update the student status
+    try {
+      const response = await fetch(`/api/scholarshipWork/${selectedWork._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          studentList: updatedStudentList,
+        }),
+      });
+  
+      if (!response.ok) {
+        const { message } = await response.json();
+        console.error(message);
+        alert(message);
+      } else {
+        console.log('Student status updated on the server');
+        alert('Student has incompleted the work');
+      }
+    } catch (error) {
+      console.error('Failed to update student status on the server:', error);
+      alert('Failed to update student status on the server');
+    }
+  };
+
+   // Pass [] as the second argument to run the effect only once on mount
 
   const handleWorkClick = (workId) => {
-    const selectedWork = works.find((work) => work.id === workId);
-    setSelectedWork(selectedWork);
+    setSelectedWork(works.find((work) => work._id === workId));
   };
 
-  const handleDelete = (workId) => {
-    const updatedWorks = works.filter(work => work.id !== workId);
-    setWorks(updatedWorks);
-    setSelectedWork(null);
+  const filteredWorks = works ? works.filter(work => {
+    if (selectedStatus === 'all') {
+      return true;
+    }
+    return work.workStatus === selectedStatus;
+  }) : [];
+
+  const handleStatusClick = (status) => {
+    setSelectedStatus(status);
+  };
+  
+  const handleSemesterFilterChange = (e) => {
+    setSemesterFilter(e.target.value);
   };
 
-  const handleCloseClick = () => {
-    setSelectedWork(null); // Reset selectedWork when the Close button is clicked
-    setCreateFormVisible(false); // Hide create form if it's open
+  const filteredWorksBySemester = semesterFilter
+    ? works.filter(work => work.semester === semesterFilter)
+    : works;
+
+  const handleDeleteConfirmed = async () => {
+    try {
+      const res = await fetch(`/api/delete/${selectedWork._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!res.ok) {
+        throw new Error('Failed to delete work');
+      }
+  
+      const updatedWorks = works.filter((work) => work._id !== selectedWork._id);
+      setWorks(updatedWorks);
+      setSelectedWork(null);
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error('Error deleting work:', error);
+      // Handle error as needed (e.g., show an error message)
+    }
   };
 
-  const handleDeleteConfirmed = () => {
-    // Implement your deletion logic here
-    // For example, you can remove the selectedWork or perform an API request
-    console.log('Deleted item:', selectedWork);
-    setIsDeleteModalOpen(false); // Close the delete modal after deletion
-  };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <StaffNavbar />
       <div className={styles.line} />
-      <h1 className={styles['textwork']}>
-        WORK
-      </h1>
+      <div className={styles['work-header']}>
+        <h1 className={styles['textwork']}>WORK</h1>
+        {/* Semester Filter Input */}
+        <input
+          type="text"
+          placeholder="Enter semester (e.g., 2/2023)"
+          value={semesterFilter}
+          onChange={handleSemesterFilterChange}
+          className={styles['semester-filter-input']}
+        />
+      </div>
+      
       <div className={styles['home-page']}>
         <div className={styles['works-list']}>
-          <div>
-            {works.map((work) => (
-              <div key={work.id} onClick={() => handleWorkClick(work.id)} className={styles['work-item']} tabIndex="1">
-                <img src={work.image}
-                  alt={`Image for ${work.title}`}
-                  style={{ width: '100px', height: 'auto', borderRadius: '10px' }}
-                />
-                <div className={styles['work-details']}>
-                  <div className={styles['work-title']}>{work.title}</div>
-                  <div>{work.hours}</div>
-                  <div></div>
-                </div>
+        {filteredWorksBySemester.length === 0 ? (
+          <div className={styles['no-works-message']}>---------- Work not available ----------</div>
+        ) : (
+        filteredWorksBySemester.map((work) => (
+            <div
+              key={work._id}
+              onClick={() => handleWorkClick(work._id)}
+              className={styles['work-item']}
+              tabIndex="1"
+            >
+              <img
+                src={work.picture}
+                alt={`Image for ${work.title}`}
+                style={{ width: '100px', height: 'auto', borderRadius: '10px' }}
+              />
+              <div className={styles['work-details']}>
+                <div className={styles['work-title']}>{work.title}</div>
+                <div>Term {work.semester}</div>
               </div>
-            ))}
-          </div>
+            </div>
+          )))}
         </div>
         <div className={styles['vertical-line']}></div>
         <div className={styles['work-details']}>
           {selectedWork ? (
             <>
               <div className={styles['button-container']}>
-                
-                <button className={styles['delete-button']} onClick={openDeleteModal}>
-                  Delete
-                </button>
-                <DeleteModal
-                  isOpen={isDeleteModalOpen}
-                  onClose={closeDeleteModal} // Pass the correct function here
-                  onDelete={handleDeleteConfirmed}
-                />
-
-
-                <button className={styles['close-button']} onClick={handleCloseClick}>
-                  Close
-                </button>
+                <button className={styles['close-button']} onClick={() => setSelectedWork(null)}>Close</button>
               </div>
 
-              <div className={styles['selected-image']}>
-                <img src={selectedWork.image} alt={`Image for ${selectedWork.title}`} style={{ width: '100px', height: 'auto', borderRadius: '10px' }} />
+              <div className={styles['work-image']}>
+                  <img src={selectedWork.picture}/>
               </div>
               <h2>{selectedWork.title}</h2>
-              <p>{selectedWork.hours}</p>
-              <p>{selectedWork.location}</p>
-
+              <p>Location: {selectedWork.location}</p>
               <div className={styles['details-info']}>
                 <h3>Date & Time Schedule</h3>
                 <ul>
-                  {selectedWork.dateTimes.map((dateTime, index) => (
-                    <li key={index}>
-                      {dateTime.startDate} - {dateTime.startTime} to {dateTime.endDate} - {dateTime.endTime}
-                      {dateTime.scholarshipHours && (
-                        <span> | Scholarship Hours: {dateTime.scholarshipHours}</span>
+                    <div>
+                      {selectedWork.start} to {selectedWork.end}
+                      {selectedWork.hours && (
+                        <span> | Scholarship Hours: {selectedWork.hours}</span>
                       )}
-                    </li>
-                  ))}
+                    </div>
                 </ul>
               </div>
-
-
+              <div className={styles['contact-section']}>
+                <div className={styles['title-container']}>
+                    <h3>Limit No of Student: {selectedWork.limit}</h3>
+                </div>
+              </div>     
+              <div className={styles['button-container']}>
+              <button className={styles['delete-button']} onClick={() => setIsDeleteModalOpen(true)}>Delete</button>
+                <DeleteModal
+                  isOpen={isDeleteModalOpen}
+                  onClose={() => setIsDeleteModalOpen(false)}
+                  onDelete={handleDeleteConfirmed}
+                />
+                
+              </div>
               <div className={styles['contact-section']}>
                 <div className={styles['title-container']}>
                   <h3
@@ -282,142 +425,128 @@ export default function Home() {
                     Student Progress
                   </h3>
                 </div>
-
-
                 {selectedContact ? (
-                  <div className={styles['list-info']}>
-                    <div>Name</div>
-                    <div>Attendance</div>
-                    <div>Action</div>
-                    <div className={styles['first-info']}>
-                      <div className={styles['profile-box']}>
-                        <div className={styles['profile-info']}>
-                          <Image src="/profile_pic.png" className={styles['profilePicture']} alt="Profile Picture" width={50} height={50} />
-                          <p
-                            onClick={openStudentModal}
-                            style={{ cursor: 'pointer', color: 'blue' }}
-                          >
-                            {selectedWork.studentProgress[0].info}
-                          </p>
-                          <StudentModal
-                            isOpen={isStudentModalOpen}
-                            onClose={closeStudentModal}
-                            student={studentData}
-                          />
-                        </div>
+                    <div className={styles['list-info']}>
+                      <div>Name</div>
+                      <div>Status</div>
+                      <div>Action</div>
+                      <div className={styles['name-section']}>
+                        {selectedWork.studentList
+                          .filter((student) => student.status === 'Accepted' || student.status === 'Completed' || student.status === 'Incompleted') // Filter out students with status 'pending'
+                          .map((student) => (
+                            <div key={student.id} className={styles['student-entry']}>
+                              <div>{student.studentName}</div>
+                              <div>{student.status}</div>
+                            </div>
+                          ))} 
                       </div>
-                      <select className={styles['select-list']} name='name' id='name'>
-                        <option>Present</option>
-                        <option>Absent</option>
-                      </select>
 
-
-                      <button className={styles['confirm-button']}>Confirm</button>
-                    </div>
-                  </div>
-
-
-                ) : selectedStudentApplied ? (
-                  <div className={styles['list-info']}>
-                    <div>Name</div>
-                    <div>Response</div>
-                    <div>Action</div>
-                    <div className={styles['first-info']}>
-                      <div className={styles['profile-box']}>
-                        <div className={styles['profile-info']}>
-                          <Image src="/profile_pic.png" className={styles['profilePicture']} alt="Profile Picture" width={50} height={50} />
-                          <p
-                            onClick={openStudentModal}
-                            style={{ cursor: 'pointer', color: 'blue' }}
-                          >
-                            {selectedWork.studentProgress[0].info}
-                          </p>
-                          <StudentModal
-                            isOpen={isStudentModalOpen}
-                            onClose={closeStudentModal}
-                            student={studentData}
-                          />
-                        </div>
+                      <div className={styles['action-section']}>
+                        {selectedWork.studentList
+                          .filter((student) => student.status === 'Accepted'  ) // Filter out students with status 'pending'
+                          .map((student) => ( 
+                          <div key={student.id} className={styles['button-entry']}>
+                            <div className={styles['button-group']}>
+                              <button className={styles['accept-button']} onClick={() => completeStudent(student._id)}>
+                                Complete
+                              </button>
+                              <button className={styles['reject-button']} onClick={() => incompleteStudent(student._id)}>
+                                Incomplete
+                              </button>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      <select className={styles['select-list']} name='name' id='name'>
-                        <option>Accept</option>
-                        <option>Reject</option>
-                      </select>
-                      <button className={styles['confirm-button']}>Confirm</button>
                     </div>
-                  </div>
-                ) : (
+                  ) : selectedStudentApplied ? (
+                    <div className={styles['list-info']}>
+                      <div>Name</div>
+                      <div>Status</div>
+                      <div>Response</div>
+                  
+                      <div className={styles['name-section']}>
+                        {selectedWork.studentList
+                          .filter((student) => student.status === 'Applied' || student.status === 'Accepted') // Filter out students with status 'pending'
+                          .map((student) => (
+                            <div key={student.id} className={styles['student-entry']}>
+                              <div>{student.studentName}</div>
+                              <div>{student.status}</div>
+                            </div>
+                          ))}
+                      </div>
+                  
+                      <div className={styles['action-section']}>
+                        {selectedWork.studentList
+                          .filter((student) => student.status === 'Applied') // Filter out students with status 'pending'
+                          .map((student) => (
+                            <div key={student.id} className={styles['button-entry']}>
+                              <div className={styles['button-group']}>
+                              <button className={styles['accept-button']} onClick={() => {
+                                console.log("Accept button clicked for student with ID:", student._id);
+                                acceptStudent(student._id);
+                              }}>
+                                Accept
+                              </button>
+                                <button className={styles['reject-button']} onClick={() => declineStudent(student._id)}>
+                                  Decline
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  ) : (
+                <div className={styles['details-info']}>
                   <div className={styles['details-info']}>
-                    <div className={styles['details-info']}>
-                      <h3>Description</h3>
-                      <p>{selectedWork.description}</p>
-                    </div>
-
-                    <div className={styles['details-info']}>
-                      <h3>Qualification</h3>
-                      <p>{selectedWork.qualifications}</p>
-                    </div>
-
-                    <div className={styles['details-info']}>
-                      <h3>Contact</h3>
-                      <p>{selectedWork.contacts}</p>
-                    </div>
+                    <h3>Description</h3>
+                    <p>{selectedWork.details}</p>
                   </div>
-                )}
-
-
-
-
-
+                  <div className={styles['details-info']}>
+                    <h3>Qualification</h3>
+                    <p>{selectedWork.qualification}</p>
+                  </div>
+                  <div className={styles['details-info']}>
+                    <h3>Contact</h3>
+                    <p>{selectedWork.contacts}</p>
+                  </div>
               </div>
-            </>
+                  )}
+            </div>
+          </>
           ) : (
             <div className={`${styles['no-works-message-s']} ${selectedWork ? styles['hidden'] : ''}`}>
-              <div className={styles['approve-title']}>Approval Status List</div>
-              <Table aria-label="Example table with dynamic content" className={styles["custom-table"]}>
-                <TableHeader columns={columns}>
-                  {(column) => (
-                    <TableColumn
-                      key={column.key}
-                      width={
-                        column.key === "name"
-                          ? "20%"
-                          : column.key === "role"
-                            ? "20%"
-                            : "20%"
-                      }
-                      className={`${styles["table-column"]} ${styles["table-header"]}`} // Add a class for header styling
-                    >
-                      {column.label}
-                    </TableColumn>
-                  )}
-                </TableHeader>
-                <TableBody items={rows} className={styles["table-body"]}>
-                  {(item) => (
-                    <TableRow key={item.key}>
-                      {(columnKey) => (
-                        <TableCell
-                          width={
-                            columnKey === "name"
-                              ? "20%"
-                              : columnKey === "role"
-                                ? "20%"
-                                : "20%"
-                          }
-                          className={styles["table-cell"]}
-                        >
-                          {getKeyValue(item, columnKey)}
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                <div className={styles['approve-title']}>Approval Status List</div>
+                <div className={`${styles['details-info']}`}>
+                    <div className={styles['status-buttons']}>
+                    <button onClick={() => handleStatusClick('all')}>All</button>         
+                    <button onClick={() => handleStatusClick('Pending')}>Pending</button>
+                    <button onClick={() => handleStatusClick('Accepted')}>Accepted</button>
+                    <button onClick={() => handleStatusClick('Rejected')}>Rejected</button>
+                    </div>
+                    {filteredWorks.length === 0 ? (
+                    <div className={styles['filter-message']}>No works with the status "{selectedStatus}" yet.</div>
+                    ) : (
+                    filteredWorks.map((work, index) => (
+                        <div key={index} className={styles['work-entry']} onClick={() => handleWorkClick(work._id)}>
+                        <div className={styles['work-image']}>
+                            <img src={work.picture} alt={`Work ${index + 1}`} />
+                        </div>
+                        <div className={styles['work-title']}>
+                            <div>{work.title}</div>
+                            <div>{work.hours} Hours</div>
+                        </div>
+                        <div className={styles['work-status']}>
+                            <div>{work.workStatus}</div>
+                        </div>
+                        </div>
+                    ))
+                    )}
+                </div>
             </div>
+
           )}
         </div>
       </div>
     </>
-
   );
 }

@@ -4,7 +4,7 @@ function YourComponent() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch('/api/getData')
+        fetch('/api/scholarshipWork')
             .then((response) => response.json())
             .then((data) => setData(data))
             .catch((error) => console.error('Error fetching data:', error));

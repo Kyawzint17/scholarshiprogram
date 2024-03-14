@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
 
+
 const Students = () => {
+  const [progressStudents, setProgressStudents] = useState([]);
+  const [historyStudents, setHistoryStudents] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+
   const [appliedStudents, setAppliedStudents] = useState([
     { id: 1, name: 'Student 1', status: 'pending' },
     { id: 2, name: 'Student 2', status: 'pending' },
   ]);
 
-  const [progressStudents, setProgressStudents] = useState([]);
-
-  const [historyStudents, setHistoryStudents] = useState([]);
+  const timeSlots = [
+    '9:00 - 11:00',
+    '11:00 - 13:00',
+    '13:00 - 15:00',
+    '15:00 - 17:00',
+    '17:00 - 19:00',
+  ];
 
   const acceptStudent = (id) => {
     const updatedStudents = appliedStudents.map((student) =>
       student.id === id ? { ...student, status: 'accepted' } : student
     );
     setAppliedStudents(updatedStudents);
-    setProgressStudents([...progressStudents, { id, name: 'New Student', status: 'incomplete' }]);
+    setProgressStudents([...progressStudents, { id, name: 'New Student', status: 'accepted', timeSlot: selectedTimeSlot }]);
   };
 
   const declineStudent = (id) => {
@@ -28,7 +39,7 @@ const Students = () => {
       student.id === id ? { ...student, status: 'complete' } : student
     );
     setProgressStudents(updatedStudents);
-    setHistoryStudents([...historyStudents, { id, name: 'New Student', status: 'complete' }]);
+    setHistoryStudents([...historyStudents, { id, name: 'New Student', status: 'complete', timeSlot: selectedTimeSlot }]);
   };
 
   const incompleteStudent = (id) => {
@@ -36,7 +47,27 @@ const Students = () => {
       student.id === id ? { ...student, status: 'incomplete' } : student
     );
     setProgressStudents(updatedStudents);
-    setHistoryStudents([...historyStudents, { id, name: 'New Student', status: 'incomplete' }]);
+    setHistoryStudents([...historyStudents, { id, name: 'New Student', status: 'incomplete', timeSlot: selectedTimeSlot }]);
+  };
+
+  const openModal = (student) => {
+    setModalIsOpen(true);
+    setSelectedStudent(student);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleTimeSlotChange = (e) => {
+    setSelectedTimeSlot(e.target.value);
+  };
+
+  const handleApply = () => {
+    if (selectedTimeSlot) {
+      acceptStudent(selectedStudent.id);
+      closeModal();
+    }
   };
 
   return (
@@ -56,23 +87,23 @@ const Students = () => {
       <ul>
         {progressStudents.map((student) => (
           <li key={student.id}>
-            {student.name} - {student.status}
+            {student.name} - {student.status} - {student.timeSlot}
             <button onClick={() => completeStudent(student.id)}>Complete</button>
             <button onClick={() => incompleteStudent(student.id)}>Incomplete</button>
           </li>
         ))}
-      </ul>
+     </ul>
 
-      <h2>Student History</h2>
-      <ul>
+        <h2>Student History</h2>
+        <ul>
         {historyStudents.map((student) => (
-          <li key={student.id}>
+            <li key={student.id}>
             {student.name} - {student.status}
-          </li>
+            </li>
         ))}
-      </ul>
-    </div>
-  );
+        </ul>
+        </div>
+    );
 };
 
-export default Students;
+    export default Students;

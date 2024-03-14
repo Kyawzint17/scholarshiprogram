@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 
 
-const StaffNavbar = () => {
+const StaffNavbar2 = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -14,7 +14,7 @@ const StaffNavbar = () => {
     await signOut({ callbackUrl: '/' }); // Sign the user out and redirect to the home page
   };
 
-  if (router.pathname === '/staffHome') {
+  if (router.pathname === '/staffhouse') {
     console.log('Session:', session);
 
     return (
@@ -23,7 +23,7 @@ const StaffNavbar = () => {
           <div className={styles.logoContainer}>
           <Image src="/abac_logo.png" alt="Logo" width={80} height={80} />
               <div className={styles.logoText}>
-                AU Scholarship Organizer
+                AU Scholarship Staff
               </div>
           </div>
           <div className={styles['imge-container']}>
@@ -45,4 +45,4 @@ const StaffNavbar = () => {
   return null;
 };
 
-export default StaffNavbar;
+export default StaffNavbar2;

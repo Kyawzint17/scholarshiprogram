@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Students = () => {
   const [appliedStudents, setAppliedStudents] = useState([
-    { id: 1, name: 'Student 1', status: 'pending' },
-    { id: 2, name: 'Student 2', status: 'pending' },
+    { id: 1, name: 'John Doe', status: 'pending' },
+    { id: 2, name: 'Jane Smith', status: 'pending' },
   ]);
 
-  const [progressStudents, setProgressStudents] = useState([]);
-
-  const [historyStudents, setHistoryStudents] = useState([]);
+  const [progressStudents, setProgressStudents] = useState([
+    { id: 3, name: 'Mark Johnson', status: 'incomplete' },
+  ]);
 
   const acceptStudent = (id) => {
     const updatedStudents = appliedStudents.map((student) =>
@@ -28,7 +28,6 @@ const Students = () => {
       student.id === id ? { ...student, status: 'complete' } : student
     );
     setProgressStudents(updatedStudents);
-    setHistoryStudents([...historyStudents, { id, name: 'New Student', status: 'complete' }]);
   };
 
   const incompleteStudent = (id) => {
@@ -36,7 +35,6 @@ const Students = () => {
       student.id === id ? { ...student, status: 'incomplete' } : student
     );
     setProgressStudents(updatedStudents);
-    setHistoryStudents([...historyStudents, { id, name: 'New Student', status: 'incomplete' }]);
   };
 
   return (
@@ -59,15 +57,6 @@ const Students = () => {
             {student.name} - {student.status}
             <button onClick={() => completeStudent(student.id)}>Complete</button>
             <button onClick={() => incompleteStudent(student.id)}>Incomplete</button>
-          </li>
-        ))}
-      </ul>
-
-      <h2>Student History</h2>
-      <ul>
-        {historyStudents.map((student) => (
-          <li key={student.id}>
-            {student.name} - {student.status}
           </li>
         ))}
       </ul>
