@@ -13,7 +13,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
+        const res = await fetch("/api/posts/scholarshipWork", { cache: "no-store" });
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }

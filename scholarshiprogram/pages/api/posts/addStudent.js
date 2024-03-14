@@ -1,4 +1,4 @@
-import WorkModel from '@/models/work'; // adapt the path to your WorkModel
+import WorkModel from '@/models/Work'; // adapt the path to your WorkModel
 
 export default async function addStudent(req, res) {
   const { id, studentName, status } = req.query;

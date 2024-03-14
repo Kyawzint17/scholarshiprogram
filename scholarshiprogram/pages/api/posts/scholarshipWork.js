@@ -1,5 +1,5 @@
 import dbConnect from '@/lib/db';
-import WorkModel from '@/models/work';
+import WorkModel from '@/models/Work';
 
 export default async function handler(req, res) {
   try {

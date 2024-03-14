@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
+        const res = await fetch("/api/posts/scholarshipWork", { cache: "no-store" });
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -159,10 +159,12 @@ export default function Home() {
                 className={styles['work-item']}
                 tabIndex="1"
               >
-                <img
+                <Image
                   src={work.picture}
                   alt={`Image for ${work.title}`}
-                  style={{ width: '100px', height: 'auto', borderRadius: '10px' }}
+                  width={100} // Specify the width directly
+                  height={100} // Set height to 'auto' to maintain aspect ratio
+                  style={{ borderRadius: '10px' }}
                 />
                 <div className={styles['work-details']}>
                   <div className={styles['work-title']}>{work.title}</div>
@@ -182,7 +184,7 @@ export default function Home() {
                   Close
               </button>
               <div className={styles['work-image']}>
-                <img src={selectedWork.picture}  />
+                <Image src={selectedWork.picture} width={100} height={50} />
               </div>
               <h2>Term {selectedWork.semester} </h2>
               <h3>{selectedWork.title}</h3>
@@ -277,7 +279,7 @@ export default function Home() {
                       .map((work) => (
                         <div key={work.id} className={styles['work-entry']} onClick={() => handleWorkClick(work._id)}>
                           <div className={styles['work-image']}>
-                            <img src={work.picture} alt={`Work ${work.id}`} />
+                            <Image src={work.picture} alt={`Work ${work.id}`} width={100} height={50} />
                           </div>
                           <div className={styles['work-title']}>
                             <h3>{work.title}</h3>

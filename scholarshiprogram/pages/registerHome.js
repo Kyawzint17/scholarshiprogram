@@ -19,7 +19,7 @@ export default function Register() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
+        const res = await fetch("/api/posts/scholarshipWork", { cache: "no-store" });
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -179,10 +179,12 @@ export default function Register() {
               className={styles['work-item']}
               tabIndex="1"
             >
-              <img
+              <Image
                 src={work.picture}
                 alt={`Image for ${work.title}`}
-                style={{ width: '100px', height: 'auto', borderRadius: '10px' }}
+                width={100} // Specify the width directly
+                height={100} // Set height to 'auto' to maintain aspect ratio
+                style={{ borderRadius: '10px' }}
               />
               <div className={styles['work-details']}>
                 <div className={styles['work-title']}>{work.title}</div>
@@ -215,7 +217,7 @@ export default function Register() {
               </div>
 
               <div className={styles['work-image']}>
-                  <img src={selectedWork.picture}/>
+                  <Image src={selectedWork.picture} width={100} height={50}/>
               </div>
               <h2>{selectedWork.title}</h2>
               <p>{selectedWork.description}</p>
@@ -280,7 +282,7 @@ export default function Register() {
                     filteredWorks.map((work, index) => (
                         <div key={index} className={styles['work-entry']} onClick={() => handleWorkClick(work._id)}>
                         <div className={styles['work-image']}>
-                            <img src={work.picture} alt={`Work ${index + 1}`} />
+                            <Image src={work.picture} alt={`Work ${index + 1}`} width={100} height={50}/>
                         </div>
                         <div className={styles['work-title']}>
                             <div>{work.title}</div>
