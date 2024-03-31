@@ -39,7 +39,7 @@ const NavBar = () => {
           </div>
           <div className={styles['text-container']}>
           <Link href={'/profile'}>
-          <div className={styles['text']}>Profile Name</div>
+          <div className={styles['text']}>Profile</div>
           </Link>
           </div>
           

@@ -17,16 +17,16 @@ const RegisterNavbar = () => {
     console.log('Session:', session);
 
     return (
-      <nav className={styles.navBar}>
+      <nav className={styles.navBar1}>
         <div className={styles.logo}>
           <div className={styles.logoContainer}>
             <Image src="/abac_logo.png" alt="Logo" width={80} height={80} />
             <div className={styles.logoText}>AU Scholarship Registrar</div>
           </div>
           <div className={styles['imge-container']}>
-            {session ? (
-              <div className={styles['text2']} onClick={handleLogout}>Log Out</div>
-            ) : null}
+            <Link href={'/menu'}>
+              <div className={styles['text2']}>Back</div>
+            </Link>
           </div>
         </div>
       </nav>

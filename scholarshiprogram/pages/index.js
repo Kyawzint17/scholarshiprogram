@@ -14,7 +14,7 @@ export default function Home() {
   // Function to determine the redirect URL based on user role
   const getRedirectUrl = async (email) => {
     if (email === 'vms0403@au.edu') {
-      return '/registerHome'; // Redirect to registerHome page if email matches
+      return '/menu'; // Redirect to registerHome page if email matches
     } else {
       // Fetch email from MongoDB and check if it matches the user's email
       if (email.match(/^u\d+@au\.edu$/)) {
@@ -24,7 +24,6 @@ export default function Home() {
       }
     }
   };
-  
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user) {

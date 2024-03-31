@@ -19,7 +19,7 @@ export default function Register() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/posts/scholarshipWork", { cache: "no-store" });
+        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -56,18 +56,45 @@ export default function Register() {
   };
 
   const filteredWorksBySemester = semesterFilter
-    ? works.filter(work => work.semester === semesterFilter)
-    : works;
+  ? works
+      .filter((work) => work.semester === semesterFilter)
+      .sort((a, b) => {
+        const startDateA = new Date(a.start);
+        const startDateB = new Date(b.start);
+        const endDateA = new Date(a.end);
+        const endDateB = new Date(b.end);
+
+        // Compare start dates
+        if (startDateA > startDateB) return -1;
+        if (startDateA < startDateB) return 1;
+
+        // If start dates are equal, compare end dates
+        if (endDateA > endDateB) return -1;
+        if (endDateA < endDateB) return 1;
+
+        return 0;
+      })
+  : works.sort((a, b) => {
+        const startDateA = new Date(a.start);
+        const startDateB = new Date(b.start);
+        const endDateA = new Date(a.end);
+        const endDateB = new Date(b.end);
+
+        // Compare start dates
+        if (startDateA > startDateB) return -1;
+        if (startDateA < startDateB) return 1;
+
+        // If start dates are equal, compare end dates
+        if (endDateA > endDateB) return -1;
+        if (endDateA < endDateB) return 1;
+
+        return 0;
+      });
+
 
   const handleCloseClick = () => {
     setSelectedWork(null); // Reset selectedWork when the Close button is clicked
     setCreateFormVisible(false); // Hide create form if it's open
-  };
-
-  const handleDelete = (workId) => {
-    const updatedWorks = works.filter(work => work.id !== workId);
-    setWorks(updatedWorks);
-    setSelectedWork(null);
   };
 
   const toggleCreateForm = () => {
@@ -88,14 +115,17 @@ export default function Register() {
   }
 
   // Assume you have an API endpoint for updating work status
-  const updateWorkStatus = async (workId, newStatus) => {
+  const updateWorkStatus = async (workId, newStatus, rejectMessage) => {
     try {
       const res = await fetch(`/api/scholarshipWork/${workId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ workStatus: newStatus }),
+        body: JSON.stringify({ 
+          workStatus: newStatus,
+          rejectMessage: rejectMessage || "",
+         }),
       });
       if (!res.ok) {
         throw new Error('Failed to update work status');
@@ -129,21 +159,29 @@ export default function Register() {
       });
   };
 
-  const handleReject = () => {
+  const handleReject = (rejectMessage) => {
     if (selectedWork.workStatus === 'Accepted') {
       console.error('Cannot reject a work with "Accepted" status');
       alert('Cannot reject a work with "Accepted" status');
       return;
     }
+
+    console.log('Reject Message:', rejectMessage);
   
-    updateWorkStatus(selectedWork._id, 'Rejected')
+    updateWorkStatus(selectedWork._id, 'Rejected', rejectMessage)
       .then(() => {
         // Update local state only after successful response from the API
         const updatedWorks = works.map((work) =>
-          work._id === selectedWork._id ? { ...work, workStatus: 'Rejected' } : work
+          work._id === selectedWork._id ? { 
+            ...work, 
+            workStatus: 'Rejected',
+          rejectMessage: rejectMessage || '',  
+        } 
+        : work
         );
         setWorks(updatedWorks);
         alert('Work Rejected Success');
+        closeRejectModal();
       })
       .catch((error) => {
         console.error('Error rejecting work:', error);
@@ -179,16 +217,22 @@ export default function Register() {
               className={styles['work-item']}
               tabIndex="1"
             >
-              <Image
+              <img
                 src={work.picture}
                 alt={`Image for ${work.title}`}
-                width={100} // Specify the width directly
-                height={100} // Set height to 'auto' to maintain aspect ratio
-                style={{ borderRadius: '10px' }}
+                style={{ width: '100px', height: 'auto', borderRadius: '10px' }}
               />
               <div className={styles['work-details']}>
+                <div className={styles['ROterm-box']}>
+                  <h3>Term {work.semester}</h3>
+                </div>               
                 <div className={styles['work-title']}>{work.title}</div>
-                <div>Term {work.semester}</div>
+                <div>Place: {work.location}</div>
+                <div className={styles['work-scholarship']}>
+                    <h3>Start date</h3>
+                    <div className={styles['work-scholarhour']}>{work.start}</div>
+                    <h4 className={styles['work-scholarhour']}>{work.hours} Given Hours</h4>
+                </div>
               </div>
             </div>
           )))}
@@ -201,14 +245,14 @@ export default function Register() {
                 <button className={styles['accept-button']} onClick={handleAccept}>
                   Accept
                 </button>
-                <button className={styles['reject-button']} onClick={handleReject}>
+                <button className={styles['reject-button']} onClick={openRejectModal}>
                   Reject
                 </button>
 
                 <Modal
                   isOpen={isRejectModalOpen}
                   onClose={closeRejectModal}
-                  onConfirm={handleReject}
+                  onConfirm={(rejectMessage) => handleReject(rejectMessage)}
                 />
 
                 <button className={styles['close-button']} onClick={handleCloseClick}>
@@ -217,10 +261,10 @@ export default function Register() {
               </div>
 
               <div className={styles['work-image']}>
-                  <Image src={selectedWork.picture} width={100} height={50}/>
+                  <img src={selectedWork.picture}/>
               </div>
               <h2>{selectedWork.title}</h2>
-              <p>{selectedWork.description}</p>
+              <p>Limit No of Student: {selectedWork.limit}</p>
               <p>Location: {selectedWork.location}</p>
               <div className={styles['details-info']}>
                 <h3>Date & Time Schedule</h3>
@@ -282,11 +326,16 @@ export default function Register() {
                     filteredWorks.map((work, index) => (
                         <div key={index} className={styles['work-entry']} onClick={() => handleWorkClick(work._id)}>
                         <div className={styles['work-image']}>
-                            <Image src={work.picture} alt={`Work ${index + 1}`} width={100} height={50}/>
+                            <img src={work.picture} alt={`Work ${index + 1}`} />
                         </div>
-                        <div className={styles['work-title']}>
-                            <div>{work.title}</div>
-                            <div>{work.hours} Hours</div>
+                        <div className={styles['work-details']}>
+                          <div className={styles['ROterm-box1']}>
+                            <h3>Term {work.semester}</h3>
+                          </div>
+                          <div className={styles['work-scholarship']}>
+                          <div className={styles['work-title']}>{work.title}</div>
+                          <div>Place: {work.location} |  Start date: {work.start}</div>
+                          </div>
                         </div>
                         <div className={styles['work-status']}>
                             <div>{work.workStatus}</div>

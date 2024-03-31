@@ -4,7 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link'; // Import Link component from Next.js
 import StaffNavbar from '/components/staffNavbar';
+import StudentModal from '@/components/ModalStudent';
 import DeleteModal from '../components/DeleteModal'; // Import your DeleteModal component
+import { useSession } from 'next-auth/react';
 
 export default function Home() {
   const [works, setWorks] = useState([]);
@@ -15,14 +17,15 @@ export default function Home() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [semesterFilter, setSemesterFilter] = useState('');
-
+  const { data, status } = useSession();
+  const [isStudentModalOpen, setStudentModalOpen] = useState(false);
   const [appliedStudents, setAppliedStudents] = useState([]);
   const [progressStudents, setProgressStudents] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/posts/scholarshipWork", { cache: "no-store" });
+        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -270,12 +273,19 @@ export default function Home() {
     setSelectedWork(works.find((work) => work._id === workId));
   };
 
-  const filteredWorks = works ? works.filter(work => {
-    if (selectedStatus === 'all') {
-      return true;
-    }
-    return work.workStatus === selectedStatus;
-  }) : [];
+  const userEmail = data?.user?.email;
+
+// Filter works by the organizer's email address
+const filteredWorks = works ? works.filter(work => work.organizer === userEmail) : [];
+
+const filteredWorkS = works ? works.filter(work => {
+  if (selectedStatus === 'all') {
+    return work.organizer === userEmail; // Display works created by the current user
+  }
+  return work.workStatus === selectedStatus && work.organizer === userEmail; // Filter works by both status and organizer
+}) : [];
+
+// Use filteredWorks instead of works in your JSX rendering
 
   const handleStatusClick = (status) => {
     setSelectedStatus(status);
@@ -286,8 +296,49 @@ export default function Home() {
   };
 
   const filteredWorksBySemester = semesterFilter
-    ? works.filter(work => work.semester === semesterFilter)
-    : works;
+  ? works
+      .filter((work) => work.semester === semesterFilter)
+      .filter((work) => work.organizer === userEmail)
+      .sort((a, b) => {
+        const startDateA = new Date(a.start);
+        const startDateB = new Date(b.start);
+        const endDateA = new Date(a.end);
+        const endDateB = new Date(b.end);
+
+        // Compare start dates
+        if (startDateA > startDateB) return -1;
+        if (startDateA < startDateB) return 1;
+
+        // If start dates are equal, compare end dates
+        if (endDateA > endDateB) return -1;
+        if (endDateA < endDateB) return 1;
+
+        return 0;
+      })
+  : works.sort((a, b) => {
+        const startDateA = new Date(a.start);
+        const startDateB = new Date(b.start);
+        const endDateA = new Date(a.end);
+        const endDateB = new Date(b.end);
+
+        // Compare start dates
+        if (startDateA > startDateB) return -1;
+        if (startDateA < startDateB) return 1;
+
+        // If start dates are equal, compare end dates
+        if (endDateA > endDateB) return -1;
+        if (endDateA < endDateB) return 1;
+
+        return 0;
+      });
+
+  const openStudentModal= () => {
+    setStudentModalOpen(true);
+  };
+
+  const closeStudentModal= () => {
+    setStudentModalOpen(false);
+  };
 
   const handleDeleteConfirmed = async () => {
     try {
@@ -311,7 +362,7 @@ export default function Home() {
       // Handle error as needed (e.g., show an error message)
     }
   };
-
+  
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -337,24 +388,29 @@ export default function Home() {
         {filteredWorksBySemester.length === 0 ? (
           <div className={styles['no-works-message']}>---------- Work not available ----------</div>
         ) : (
-        filteredWorksBySemester.map((work) => (
+        filteredWorks.map((work) => (
             <div
               key={work._id}
               onClick={() => handleWorkClick(work._id)}
               className={styles['work-item']}
               tabIndex="1"
             >
-              <Image
+              <img
                 src={work.picture}
                 alt={`Image for ${work.title}`}
-                width={100} // Specify the width directly
-                height={100} // Set height to 'auto' to maintain aspect ratio
-                style={{ borderRadius: '10px' }} // Add any additional styling here
+                style={{ width: '100px', height: 'auto', borderRadius: '10px' }}
               />
-
               <div className={styles['work-details']}>
+                <div className={styles['ROterm-box']}>
+                  <h3>Term {work.semester}</h3>
+                </div>
                 <div className={styles['work-title']}>{work.title}</div>
-                <div>Term {work.semester}</div>
+                <div>Place: {work.location}</div>
+                <div className={styles['work-scholarship']}>
+                    <h3>Start date</h3>
+                    <div className={styles['work-scholarhour']}>{work.start}</div>
+                    <h4 className={styles['work-scholarhour']}>{work.hours} Given Hours</h4>
+                </div>
               </div>
             </div>
           )))}
@@ -368,10 +424,13 @@ export default function Home() {
               </div>
 
               <div className={styles['work-image']}>
-                  <Image src={selectedWork.picture} width={100} height={50}/>
+                  <img src={selectedWork.picture}/>
               </div>
-              <h2>{selectedWork.title}</h2>
-              <p>Location: {selectedWork.location}</p>
+              <h2>Term {selectedWork.semester} </h2>
+              <div className={styles['work-scholarship']}>
+                <h3 className={styles['work-title']}>{selectedWork.title}</h3>
+                <p>Location: {selectedWork.location}</p>
+              </div>
               <div className={styles['details-info']}>
                 <h3>Date & Time Schedule</h3>
                 <ul>
@@ -438,7 +497,7 @@ export default function Home() {
                           .filter((student) => student.status === 'Accepted' || student.status === 'Completed' || student.status === 'Incompleted') // Filter out students with status 'pending'
                           .map((student) => (
                             <div key={student.id} className={styles['student-entry']}>
-                              <div>{student.studentName}</div>
+                              <div>{student.studentName} ( {student.studentEmail} )</div>
                               <div>{student.status}</div>
                             </div>
                           ))} 
@@ -472,7 +531,7 @@ export default function Home() {
                           .filter((student) => student.status === 'Applied' || student.status === 'Accepted') // Filter out students with status 'pending'
                           .map((student) => (
                             <div key={student.id} className={styles['student-entry']}>
-                              <div>{student.studentName}</div>
+                              <div>{student.studentName} ( {student.studentEmail} )</div>
                               <div>{student.status}</div>
                             </div>
                           ))}
@@ -526,17 +585,22 @@ export default function Home() {
                     <button onClick={() => handleStatusClick('Accepted')}>Accepted</button>
                     <button onClick={() => handleStatusClick('Rejected')}>Rejected</button>
                     </div>
-                    {filteredWorks.length === 0 ? (
+                    {filteredWorkS.length === 0 ? (
                     <div className={styles['filter-message']}>No works with the status "{selectedStatus}" yet.</div>
                     ) : (
-                    filteredWorks.map((work, index) => (
+                    filteredWorkS.map((work, index) => (
                         <div key={index} className={styles['work-entry']} onClick={() => handleWorkClick(work._id)}>
                         <div className={styles['work-image']}>
-                            <Image src={work.picture} alt={`Work ${index + 1}`} width={100} height={50} />
+                            <img src={work.picture} alt={`Work ${index + 1}`} />
                         </div>
-                        <div className={styles['work-title']}>
-                            <div>{work.title}</div>
-                            <div>{work.hours} Hours</div>
+                        <div className={styles['work-details']}>
+                          <div className={styles['ROterm-box1']}>
+                            <h3>Term {work.semester}</h3>
+                          </div>
+                          <div className={styles['work-scholarship']}>
+                          <div className={styles['work-title']}>{work.title}</div>
+                          <div>Place: {work.location} |  Start date: {work.start} | {work.hours} Given Hours</div>
+                          </div>
                         </div>
                         <div className={styles['work-status']}>
                             <div>{work.workStatus}</div>

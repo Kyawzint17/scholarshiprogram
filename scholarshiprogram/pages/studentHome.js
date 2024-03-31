@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 
 export default function Home() {
 
+  const [noWorksMessage, setNoWorksMessage] = useState('');
   const [works, setWorks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateFormVisible, setCreateFormVisible] = useState(false);
@@ -26,7 +27,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/posts/scholarshipWork", { cache: "no-store" });
+        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -59,19 +60,30 @@ export default function Home() {
     }
   
     const studentName = `${data.user?.name}`; // assuming that data.user has a 'name' property
+    const studentEmail = `${data.user?.email}`; 
     const workId = selectedWork._id;
     const status = 'Applied';
   
     console.log('studentName:', studentName);
+    console.log('studentEmail:', studentEmail);
     console.log('status:', status);
-    
+  
     try {
-      const res = await fetch(`/api/posts/addStudent?id=${workId}&studentName=${encodeURIComponent(studentName)}&status=${encodeURIComponent(status)}`, {
+      // Modify the fetch request to use the prepared query parameters
+      const res = await fetch(`/api/posts/addStudent`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
+        body: JSON.stringify({
+          id: workId,
+          studentName: studentName,
+          studentEmail: studentEmail,
+          status: status
+        }),
       });
+      
   
       if (!res.ok) {
         const { message } = await res.json();
@@ -87,8 +99,8 @@ export default function Home() {
           if (data.limitReached) {
             alert("Applicant list for this work is full");
           } else {
-          alert('Work Applied Success');
-          // You can update the UI or perform any necessary actions here based on the response data
+            alert('Work Applied Success');
+            // You can update the UI or perform any necessary actions here based on the response data
           }
         });
       }
@@ -98,13 +110,16 @@ export default function Home() {
     }
   };
   
+  
   const filteredWorks = works ? works.filter(work => {
     if (selectedStatus === 'all') {
       return true;
     }
-    // Check if any student in the studentList array has the selectedStatus
-    return work.studentList.some(student => student.status === selectedStatus);
+    // Check if any student in the studentList array has the selectedStatus and if the student name matches the current user's name
+    return work.studentList.some(student => student.status === selectedStatus && student.studentName === data?.user?.name);
   }) : [];
+
+  
   
 
   const handleStatusClick = (status) => {
@@ -120,12 +135,30 @@ export default function Home() {
     setHoursFilter(e.target.value);
   };
 
-  const filteredWorksByHours = works.filter(work => {
+  const filteredWorksByHours = works
+  .filter((work) => {
     if (!hoursFilter) {
       return work.workStatus === "Accepted"; // Filter only works with status "Accepted" if no hours filter is applied
     }
     return work.hours === parseInt(hoursFilter) && work.workStatus === "Accepted"; // Filter works by hours and status "Accepted"
+  })
+  .sort((a, b) => {
+    const startDateA = new Date(a.start);
+    const startDateB = new Date(b.start);
+    const endDateA = new Date(a.end);
+    const endDateB = new Date(b.end);
+
+    // Compare start dates
+    if (startDateA > startDateB) return -1;
+    if (startDateA < startDateB) return 1;
+
+    // If start dates are equal, compare end dates
+    if (endDateA > endDateB) return -1;
+    if (endDateA < endDateB) return 1;
+
+    return 0;
   });
+
 
   const toggleCreateForm = () => {
     setCreateFormVisible((prevVisible) => !prevVisible);
@@ -137,11 +170,11 @@ export default function Home() {
     <NavBar />
       <div className={styles.line} />
       <div className={styles['work-header']}>
-        <h1 className={styles['textwork']}>APPROVED WORK</h1>
+        <h1 className={styles['textwork']}>WORK AVAILABLE</h1>
         {/* Semester Filter Input */}
         <input
           type="text"
-          placeholder="Enter working hours (e.g 3/5/10)"
+          placeholder="Enter working hours (e.g 3/4/5)"
           value={hoursFilter}
           onChange={handleHoursFilterChange}
           className={styles['semester-filter-input']}
@@ -156,19 +189,25 @@ export default function Home() {
               <div
                 key={work._id}
                 onClick={() => handleWorkClick(work._id)}
-                className={styles['work-item']}
+                className={styles['work-item1']}
                 tabIndex="1"
               >
-                <Image
+                <img
                   src={work.picture}
                   alt={`Image for ${work.title}`}
-                  width={100} // Specify the width directly
-                  height={100} // Set height to 'auto' to maintain aspect ratio
-                  style={{ borderRadius: '10px' }}
+                  style={{ width: '100px', height: 'auto', borderRadius: '10px' }}
                 />
                 <div className={styles['work-details']}>
+                  <div className={styles['term-box']}>
+                    <h3>Term {work.semester}</h3>
+                  </div>
                   <div className={styles['work-title']}>{work.title}</div>
-                  <div className={styles['work-scholarhour']}>{work.hours} Hours</div>
+                  <div>Place: {work.location}</div>
+                  <div className={styles['work-scholarship']}>
+                    <h3>Start date</h3>
+                    <div className={styles['work-scholarhour']}>{work.start}</div>
+                    <h4 className={styles['work-scholarhour']}>{work.hours} Given Hours</h4>
+                  </div>
                 </div>
               </div>
             ))
@@ -184,11 +223,14 @@ export default function Home() {
                   Close
               </button>
               <div className={styles['work-image']}>
-                <Image src={selectedWork.picture} width={100} height={50} />
+                <img src={selectedWork.picture}  />
               </div>
               <h2>Term {selectedWork.semester} </h2>
-              <h3>{selectedWork.title}</h3>
-              <p>Location: {selectedWork.location}</p>
+              <div className={styles['work-scholarship']}>
+                <h3 className={styles['work-title']}>{selectedWork.title}</h3>
+                <p>Location: {selectedWork.location}</p>
+              </div>
+              
               <div className={styles['details-info']}>
                 <h3>Date & Time Schedule</h3>
                   <ul>
@@ -204,7 +246,7 @@ export default function Home() {
               
               <div className={styles['contact-section']}>
                 <div className={styles['title-container']}>
-                    <h3>Student Applicants: {selectedWork.studentList.filter(student => student.status === 'Applied' || student.status === 'Accepted' || student.status === 'Completed' || student.status === 'Incompleted').length} of {selectedWork.limit}</h3>
+                    <h3>Student Applicants: {selectedWork.studentList.filter(student => student.status === 'Accepted' || student.status === 'Completed' || student.status === 'Incompleted').length} of {selectedWork.limit}</h3>
                 </div>
                 <div className={styles['details-info']}> 
                   <div>
@@ -264,8 +306,8 @@ export default function Home() {
             <div className={`${styles['no-works-message-s']} ${selectedWork ? styles['hidden'] : ''}`}>
               <div className={styles['approve-title']}>Work Status</div>
               <div className={`${styles['details-info']}`}>
-                <div className={styles['status-buttons']}>
-                  <button onClick={() => handleStatusClick('all')}>All</button>
+                <div className={styles['status-buttons1']}>
+                  <button onClick={() => handleStatusClick('all')}>Status</button>
                   <button onClick={() => handleStatusClick('Applied')}>Applied</button>
                   <button onClick={() => handleStatusClick('Accepted')}>Accepted</button>
                   <button onClick={() => handleStatusClick('Rejected')}>Rejected</button>
@@ -276,25 +318,31 @@ export default function Home() {
                   <div>
                     {filteredWorks
                       .filter((work) => work.workStatus === "Accepted")
+                      .filter(work => work.studentList.some(student => student.studentName === data?.user?.name))
+                      .filter(work => !work.studentList.some(student => student.status === "Completed" || student.status === "Incomplete"))
                       .map((work) => (
-                        <div key={work.id} className={styles['work-entry']} onClick={() => handleWorkClick(work._id)}>
+                        <div key={work.id} className={styles['work-entry1']} onClick={() => handleWorkClick(work._id)}>
                           <div className={styles['work-image']}>
-                            <Image src={work.picture} alt={`Work ${work.id}`} width={100} height={50} />
+                            <img src={work.picture} alt={`Work ${work.id}`} />
                           </div>
-                          <div className={styles['work-title']}>
-                            <h3>{work.title}</h3>
-                            <div className={styles['unbold']}>
-                              <li>
-                                {work.start} to {work.end}
-                                {work.hours && (
-                                  <span> | Scholarship Hours: {work.hours}</span>
-                                )}
-                              </li>
+                          <div className={styles['work-details']}>
+                            <div className={styles['term-box1']}>
+                              <h3>Term {work.semester}</h3>
                             </div>
-                            <div>
-                              Location: {work.location}
+                            <div className={styles['work-title']}>{work.title}</div>
+                            <div>Location: {work.location}</div>
+                            <div className={styles['work-scholarship']}>
+                                <div className={styles['unbold']}>
+                                  <li>
+                                    {work.start} to {work.end}
+                                    {work.hours && (
+                                      <span> | Scholarship Hours: {work.hours}</span>
+                                    )}
+                                  </li>
+                                </div>
                             </div>
                           </div>
+                          
                           <div className={styles['work-status']}>
                             <div>
                               {work.studentList.map((student, idx) => (

@@ -24,9 +24,8 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
     return (
       <div className={styles.modalOverlay}>
         <div className={styles.modal}>
-          <h2>Reject Work</h2>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="rejectionReason">Reason for Rejection:</label>
+            <label htmlFor="rejectionReason">Reason for Work Rejection:</label>
             <textarea
               id="rejectionReason"
               name="rejectionReason"
@@ -41,9 +40,6 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
               </button>
               <button className={styles.cancelButton} onClick={onClose}>
                 Cancel
-              </button>
-              <button className={styles.closeButton} onClick={onClose}>
-                Close
               </button>
             </div>
           </form>

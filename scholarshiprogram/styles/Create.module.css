@@ -3,12 +3,9 @@
 .create-page {
   background-color: white;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column; /* Stack children vertically */
-  justify-content: flex-start; /* Align content to the top */
-  align-items: center; /* Center horizontally */
   border: 1px solid gray;
   text-align: center;
+
 }
 
 .create-text {
@@ -20,31 +17,18 @@
   color: black;
 }
 
-.parent-container {
-  border: 1px solid black;
-  margin: 1rem;
-  padding: 2rem 2rem;
-  text-align: center;
-}
-
-.float-child {
-  display: inline-block;
-  border: 1px solid transparent;
-  padding: 2rem 8rem;
-  vertical-align: middle;
-}
-
 .form-container {
   color: black;
+
 }
 
 .form-column {
-  text-align: center;
-  padding: 50px;
+  text-align: left; /* Align form elements to the left */
 }
 
 .form-container label {
   margin-bottom: 5px;
+  display: block; /* Ensure labels are displayed as block elements */
 }
 
 .form-container input,
@@ -52,83 +36,78 @@
   border-radius: 10px;
   width: 100%;
   padding: 10px;
-  border: 1px solid black;
-  margin-bottom: 6px;
+  border: 1px solid green;
+  margin-bottom: 12px;
+  transition-duration: 0.4s;
   background-color: white;
   color: black;
-  transition-duration: 0.4s;
 }
 
 .form-container input:hover,
 .form-container textarea:hover {
-  background-color: gray;
+  background-color: lightseagreen; /* Change background color on hover */
   color: black;
 }
 
 .form-button-container input {
-  text-align: center;
+  width: 100%;
   margin-top: 20px;
-  background-color: gray;
+  background-color: blue;
   color: white;
   border-radius: 50px;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
   transition-duration: 0.4s;
 }
 
 .form-button-container input:hover {
-  background-color: blue;
-  color: white;
+  background-color: #555; /* Change background color on hover */
 }
-
-.left-column {
-  width: 50%;
-  padding: 0 10px;
-  align-items: flex-start; /* Align fields to the top */
-}
-
-.right-column {
-  flex-direction: column;
-  width: 50%;
-  padding: 0 10px;
-}
-
-.upload-conatiner {
-  color: black;
-}
-
-.upload-pic {
-  display: inline-block;
-  border-radius: 25px;
-  padding: 200px 100px;
-  border: 1px dashed black;
-  background-color: white;
-  color: black;
-  margin: auto;
-}
-
-.container-form {
-  display: inline-block;
-  max-width: 700px;
-  margin: auto;
-  border: 1px solid transparent;
-  text-align: center;
-  padding: 50px;
-  align-items: flex-end; /* Align content to the bottom of the container */
-  border-radius: 10px;
-}
-
 
 .datetime-box {
   margin: 10px;
-  padding: 5px;
+  padding: 10px;
   background-color: #33b249;
   border: none;
   border-radius: 10px;
+  color: white;
 }
 
-.remove-box  {
-  padding: 5px;
+.remove-box {
+  margin: 10px;
+  padding: 10px;
   background-color: #ED0800;
   border: none;
   border-radius: 10px;
+  color: white;
+}
 
+
+.parent-container {
+  border: 1px solid transparent;
+  
+}
+
+.float-child-left {
+  display: inline-block;
+  width: 30%; /* Adjust width as needed */
+  margin-right: 10%; /* Adjust spacing between containers */
+  vertical-align: top; /* Align to the top */
+}
+
+.float-child-right {
+  display: inline-block;
+  width: 30%; /* Adjust width as needed */
+  vertical-align: top; /* Align to the top */
+}
+
+.flat-container {
+  margin-top: 2rem; /* Adjust as needed */
+  border: 1px solid transparent;
+  padding: 2rem;
+  width: 50%; /* Make container full width */
+  min-height: 200px; /* Adjust height as needed */
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
 }

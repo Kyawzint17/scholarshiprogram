@@ -13,7 +13,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/posts/scholarshipWork", { cache: "no-store" });
+        const res = await fetch("/api/scholarshipWork", { cache: "no-store" });
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -29,10 +29,20 @@ export default function Profile() {
     fetchData();
   }, []);
 
-  const uniqueSemesters = [...new Set(works.map(work => work.semester))];
+  // Filter works based on the user's status
+  const userWorks = works.filter(work =>
+    work.studentList.some(
+      student =>
+        student.studentName === data?.user?.name &&
+        (student.status === 'Completed' || student.status === 'Incompleted')
+    )
+  );
+
+  // Extract unique semesters from the filtered works
+  const uniqueSemesters = [...new Set(userWorks.map(work => work.semester))];
 
   const totalHoursBySemester = uniqueSemesters.reduce((acc, semester) => {
-    const totalHours = works
+    const totalHours = userWorks
       .filter(work => work.semester === semester)
       .filter(work => work.workStatus === "Accepted")
       .reduce((sum, work) => {
@@ -87,22 +97,23 @@ export default function Profile() {
             ) : (
               uniqueSemesters.map(semester => (
                 <div key={semester}>
-                  {works
+                  {userWorks
                     .filter(work => work.semester === semester) // Filter works by semester
                     .filter(work => work.workStatus === "Accepted") // Display only works with "Accepted" status
                     .some(work => work.studentList.some(student => student.status === 'Completed' || student.status === 'Incompleted'))
                     ? (
                       <div className={styles['details-info']}>
                         <h3 className={styles['textwork2']}>
-                            {semester} | Total Hours: {totalHoursBySemester[semester]} / 60
+                            Term {semester} | Total Hours: {totalHoursBySemester[semester]} / 60
                         </h3>
                         <div className={styles['details-info']}>
-                          {works
+                          {userWorks
                             .filter(work => work.semester === semester) // Filter works by semester
                             .filter(work => work.workStatus === "Accepted") // Display only works with "Accepted" status
+                            .filter(work => work.studentList.some(student => student.studentName === data?.user?.name))
                             .filter(work => work.studentList.some(student => student.status === 'Completed' || student.status === 'Incompleted'))
                             .map(work => (
-                              <div key={work._id} className={styles['work-entry']}>
+                              <div key={work._id} className={styles['work-entry1']}>
                                 <div className={styles['work-image']}>
                                   <img src={work.picture} alt={`Work ${work.id}`} />
                                 </div>

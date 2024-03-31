@@ -8,6 +8,18 @@
 
 }
 
+.student-name-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  padding: 0;
+  width: auto;
+  display: flex;
+  align-items: center;
+}
+
 .unbold {
   font-weight: normal; /* This sets the font weight to normal (unbold) */
 }
@@ -58,6 +70,11 @@
   padding: 1px;
 }
 
+.navBar1 {
+  background-color: #4caf50;
+  padding: 1px;
+}
+
 .li {
   margin: 0 1rem;
 }
@@ -102,6 +119,23 @@
   flex: 1;
 }
 
+.work-scholarship {
+  /* Add margin between the scholarship details */
+  margin-top: 15px;
+}
+
+.work-scholarhour {
+  /* Add margin between each scholarship detail */
+  margin-right: 10px;
+}
+
+.work-details-box {
+  background-color: #f0f0f0; /* Set the background color of the box */
+  padding: 20px; /* Add padding inside the box */
+  border-radius: 10px; /* Add rounded corners to the box */
+  margin-bottom: 20px; /* Add margin to create space between boxes */
+}
+
 .work-header {
   display: flex;
   flex-direction: column;
@@ -109,8 +143,9 @@
   color: #000;
   border: 1px solid transparent;
   left: 40px;
+  
   position: absolute;
-  padding: 20px 40px;
+  padding: 10px 40px;
 }
 
 .textwork {
@@ -193,14 +228,35 @@
   align-items: center;
   /* Vertically align content */
   grid-gap: 10px;
+  background-color: #E0F2E9; /* Set the background color of the box */
+  padding: 20px; /* Add padding inside the box */
+  border-radius: 10px; /* Add rounded corners to the box */
+  margin-bottom: 20px;
+  border: thick solid transparent; /* Add a transparent border initially */
 }
 
 .work-item:focus {
-  border-right: thick solid blue;
-  padding: auto;
-
+  border-color: green; /* Change the border color to blue */
 }
 
+.work-item1 {
+  display: grid;
+  /* Use flexbox for layout */
+  grid-template-columns: 13ch 30ch;
+  grid-template-rows: 18ch;
+  align-items: center;
+  /* Vertically align content */
+  grid-gap: 10px;
+  background-color: #FFEBEE;; /* Set the background color of the box */
+  padding: 20px; /* Add padding inside the box */
+  border-radius: 10px; /* Add rounded corners to the box */
+  margin-bottom: 20px;
+  border: thick solid transparent; /* Add a transparent border initially */
+}
+
+.work-item1:focus {
+  border-color: red; /* Change the border color to blue */
+}
 
 .work-content {
   display: flex;
@@ -219,6 +275,7 @@
   /* border: 1px solid #ccc;  Optional: Add a border for visual separation */
   color: black;
   flex: 2;
+  
   /* Take up twice the space of the works list */
   justify-content: center;
 
@@ -564,7 +621,7 @@
   width: 350px;
   padding: 20px;
   border: 1px solid #ddd;
-  background-color: white;
+  background-color: #f0f0f0; 
   position: relative;
   left: 50px;
   top: 120px;
@@ -573,6 +630,7 @@
 
 .infoBox {
   border: 1px solid #ccc;
+  background-color: white;
   /* Add border or other styling as desired */
   padding: 10px;
   /* Add padding as desired */
@@ -715,7 +773,50 @@
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  background-color: #E0F2E9;
+  padding: 20px;
+  border-radius: 10px
+}
 
+.work-entry1 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #FFEBEE;
+  padding: 20px;
+  border-radius: 10px
+}
+
+.term-box {
+  border: 2px solid red; /* Example border style */
+  padding: 10px; /* Example padding */
+  margin-bottom: 10px; /* Example margin */
+  border-radius: 5px
+}
+
+.term-box1 {
+  border: 2px solid red; /* Example border style */
+  padding: 5px; /* Reduced padding */
+  margin-bottom: 5px; /* Reduced margin */
+  width: fit-content; /* Set width to fit the content */
+  max-width: 200px; /* Example maximum width */
+  border-radius: 5px
+}
+
+.ROterm-box {
+  border: 2px solid green; /* Example border style */
+  padding: 10px; /* Example padding */
+  margin-bottom: 10px; /* Example margin */
+  border-radius: 5px
+}
+
+.ROterm-box1 {
+  border: 2px solid green; /* Example border style */
+  padding: 5px; /* Reduced padding */
+  margin-bottom: 5px; /* Reduced margin */
+  width: fit-content; /* Set width to fit the content */
+  max-width: 200px; /* Example maximum width */
+  border-radius: 5px
 }
 
 .work-image {
@@ -858,6 +959,12 @@
   margin-bottom: 20px;
 }
 
+.status-buttons1 {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
 .status-buttons button {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -872,8 +979,26 @@
   border-radius: 5px;
 }
 
+.status-buttons1 button {
+  background-color: #EF0107; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
 .status-buttons button:hover {
   background-color: #45a049;
+}
+
+.status-buttons1 button:hover {
+  background-color: #EF0107;
 }
 
 .filter-message {

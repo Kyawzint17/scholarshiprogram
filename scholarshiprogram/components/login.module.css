@@ -27,7 +27,7 @@
 .login-container {
   max-width: 400px;
   padding: 20px;
-  background-color: #fefefe;
+  background-color: rgba(254, 254, 254, 0.8);
   border-radius: 4px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -102,4 +102,82 @@
 .custom-h2 {
   color: black;
   font-family:"Inter", sans-serif; /* Change "Arial" to the desired font-family */
+}
+
+
+.menu-page {
+  background: url(/CL_1.jpg);
+  min-height: 110vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-repeat: "no-repeat";
+  background-size: cover;
+
+}
+
+/* login.module.css */
+
+/* Container Styles */
+.menu-container {
+  max-width: 400px;
+  padding: 20px;
+  background-color: rgba(254, 254, 254, 0.8);
+  border-radius: 4px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center children horizontally and vertically */
+}
+
+
+/* Logo Image Styles */
+.custom1-h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: black;
+  font-family:"Inter", sans-serif;
+}
+
+/* Buttons Container Styles */
+.buttons-container2 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  align-items: center; /* Center buttons horizontally */
+}
+
+/* Custom Button Styles */
+.custom-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #45a049;
+}
+
+/* Logout Button Styles */
+.logoutbutton {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logoutbutton:hover {
+  background-color: #d32f2f;
 }

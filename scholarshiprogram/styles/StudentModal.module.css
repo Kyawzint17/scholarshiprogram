@@ -11,6 +11,12 @@
     align-items: center;
     z-index: 1000;
   }
+
+  .modal-body {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
   
   .modalContent {
     background-color: #fff;

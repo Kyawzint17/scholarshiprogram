@@ -1,5 +1,5 @@
 import dbConnect from '@/lib/db';
-import WorkModel from '@/models/Work';
+import WorkModel from '@/models/work';
 import formidable from 'formidable';
 
 export default async function handler(req, res) {

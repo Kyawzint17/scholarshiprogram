@@ -8,13 +8,13 @@ const StaffNavbar = () => {
 
   if (router.pathname === '/create') {
     return (
-      <nav className={styles.navBar}>
+      <nav className={styles.navBar1}>
         <div className={styles.logo}>
           <div className={styles.logoContainer}>
             <Image src="/abac_logo.png" alt="Logo" width={80} height={80} />
             <Link href={'/'}>
               <div className={styles.logoText}>
-                AU Scholarship Organizer
+                AU Scholarship Work Creation
               </div>
             </Link>
           </div>

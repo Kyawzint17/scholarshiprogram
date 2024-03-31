@@ -14,9 +14,12 @@ const workSchema = new mongoose.Schema({
   contacts: String,
   studentList: [{
     studentName: String,
+    studentEmail: String,
     status: String,
   }],
   workStatus: String,
+  organizer: String,
+  rejectMessage: String,
 });
 
 // Specify the collection name as 'work'

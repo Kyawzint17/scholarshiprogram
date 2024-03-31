@@ -1,5 +1,5 @@
 import dbConnect from '@/lib/db';
-import WorkModel from '@/models/Work'; // adapt the path to your WorkModel
+import WorkModel from '@/models/work'; // adapt the path to your WorkModel
 
 export default async function acceptStudent(req, res) {
     const { id } = req.query;

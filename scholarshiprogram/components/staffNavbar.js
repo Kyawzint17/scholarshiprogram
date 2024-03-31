@@ -18,7 +18,7 @@ const StaffNavbar = () => {
     console.log('Session:', session);
 
     return (
-      <nav className={styles.navBar}>
+      <nav className={styles.navBar1}>
         <div className={styles.logo}>
           <div className={styles.logoContainer}>
           <Image src="/abac_logo.png" alt="Logo" width={80} height={80} />
