@@ -22,11 +22,7 @@ export default function Home() {
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [hoursFilter, setHoursFilter] = useState('');
   const [isApplyModalVisible, setApplyModalVisible] = useState(false);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [semesterFilter, setSemesterFilter] = useState('');
-  const [locationFilter, setLocationFilter] = useState('');
-  const [startDateFilter, setStartDateFilter] = useState('');
-  const [endDateFilter, setEndDateFilter] = useState('');
   const { data, status } = useSession();
 
   useEffect(() => {
@@ -116,37 +112,17 @@ export default function Home() {
   };
   
   
-  const filteredWorks = works
-  ? works
-      .filter(work => {
-        if (selectedStatus === 'all') {
-          return true;
-        }
-        // Check if any student in the studentList array has the selectedStatus and if the student name matches the current user's name
-        return work.studentList.some(
-          student => student.status === selectedStatus && student.studentName === data?.user?.name
-        );
-      })
-      .sort((a, b) => {
-        const startDateA = new Date(a.start);
-        const startDateB = new Date(b.start);
-        const endDateA = new Date(a.end);
-        const endDateB = new Date(b.end);
-
-        // Compare start dates
-        if (startDateA > startDateB) return -1;
-        if (startDateA < startDateB) return 1;
-
-        // If start dates are equal, compare end dates
-        if (endDateA > endDateB) return -1;
-        if (endDateA < endDateB) return 1;
-
-        return 0;
-      })
-  : [];
-
+  const filteredWorks = works ? works.filter(work => {
+    if (selectedStatus === 'all') {
+      return true;
+    }
+    // Check if any student in the studentList array has the selectedStatus and if the student name matches the current user's name
+    return work.studentList.some(student => student.status === selectedStatus && student.studentName === data?.user?.name);
+  }) : [];
 
   
+  
+
   const handleStatusClick = (status) => {
     setSelectedStatus(status);
   };
@@ -156,49 +132,19 @@ export default function Home() {
     setCreateFormVisible(false); // Hide create form if it's open
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString();
-    month = month.length === 1 ? '0' + month : month; // Add leading zero if needed
-    let day = date.getDate().toString();
-    day = day.length === 1 ? '0' + day : day; // Add leading zero if needed
-    return `${year}-${month}-${day}`;
+  const handleHoursFilterChange = (e) => {
+    setHoursFilter(e.target.value);
   };
 
-  const formatdate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0'); // Add leading zero if needed
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add leading zero if needed
-    const year = date.getFullYear();
-    const hours = date.getHours().toString().padStart(2, '0'); // Add leading zero if needed
-    const minutes = date.getMinutes().toString().padStart(2, '0'); // Add leading zero if needed
-    return `${day}/${month}/${year} - ${hours}:${minutes}`;
-  };
-  
-  
-  const filteredWorksByFilters = works
+  const filteredWorksByHours = works
   .filter((work) => {
     const matchesHours = !hoursFilter || work.hours === parseInt(hoursFilter);
     const matchesStatus = work.workStatus === "Accepted";
-    const hasSpaceForStudents = work.studentList.length < work.limit;
-    return matchesHours && matchesStatus && hasSpaceForStudents;;
+    return matchesHours && matchesStatus;
   })
   .filter((work) => {
     const matchesSemester = !semesterFilter || work.semester === semesterFilter;
     return matchesSemester;
-  })
-  .filter((work) => {
-    const matchesLocation = !locationFilter || work.location.toLowerCase().includes(locationFilter.toLowerCase());
-    return matchesLocation;
-  })
-  .filter((work) => {
-    const matchesStartDate = !startDateFilter || formatDate(work.start) === startDateFilter;
-    return matchesStartDate;
-  })
-  .filter((work) => {
-    const matchesEndDate = !endDateFilter || formatDate(work.end) === endDateFilter;
-    return matchesEndDate;
   })
   .sort((a, b) => {
     const startDateA = new Date(a.start);
@@ -217,28 +163,20 @@ export default function Home() {
     return 0;
   });
 
-  const handleHoursFilterChange = (e) => {
-    setHoursFilter(e.target.value);
-  };
-
-  const toggleFilterBox = () => {
-    setFilterOpen((prevOpen) => !prevOpen);
-  };
 
   const handleSemesterFilterChange = (e) => {
     setSemesterFilter(e.target.value);
   };
 
-  const handleLocationFilterChange = (e) => {
-    setLocationFilter(e.target.value);
-  };
+  const filteredWorksBySemester = filteredWorksByHours.filter((work) => {
+    if (!semesterFilter) {
+      return true; // No semester filter applied, return all works
+    }
+    return work.semester === semesterFilter; // Filter works by semester
+  });
 
-  const handleStartDateFilterChange = (e) => {
-    setStartDateFilter(e.target.value);
-  };
-
-  const handleEndDateFilterChange = (e) => {
-    setEndDateFilter(e.target.value);
+  const toggleCreateForm = () => {
+    setCreateFormVisible((prevVisible) => !prevVisible);
   };
 
 
@@ -250,60 +188,28 @@ export default function Home() {
         <h1 className={styles['textwork']}>WORK AVAILABLE</h1>
         {/* Semester Filter Input */}
         <div className={styles['filter-container']}>
-          <button onClick={toggleFilterBox} className={styles['filter-button']}>
-            Filter
-          </button>
-          {/* Filter Box */}
-          {filterOpen && (
-            <div className={styles['filter-box']}>
-              {/* Design your filter box here */}
-              <input
-                type="number"
-                placeholder="Enter working hours (e.g 3/4/5)"
-                value={hoursFilter}
-                onChange={handleHoursFilterChange}
-                className={styles['semester-filter-input']}
-              />
-              <input
-                type="text"
-                placeholder="Enter semester"
-                value={semesterFilter}
-                onChange={handleSemesterFilterChange}
-                className={styles['filter-input']}
-              />
-              <input
-                type="text"
-                placeholder="Enter location"
-                value={locationFilter}
-                onChange={handleLocationFilterChange}
-                className={styles['filter-input']}
-              />
-              <div>Start Date</div>
-              <input
-                type="date"
-                placeholder="Start date"
-                value={startDateFilter}
-                onChange={handleStartDateFilterChange}
-                className={styles['filter-input']}
-              />
-              <div>End Date</div>
-              <input
-                type="date"
-                placeholder="End date"
-                value={endDateFilter}
-                onChange={handleEndDateFilterChange}
-                className={styles['filter-input']}
-              />
-            </div>
-          )}
+          <input
+            type="text"
+            placeholder="Enter working hours (e.g 3/4/5)"
+            value={hoursFilter}
+            onChange={handleHoursFilterChange}
+            className={styles['semester-filter-input']}
+          />
+          <input
+            type="text"
+            placeholder="Enter semester"
+            value={semesterFilter}
+            onChange={handleSemesterFilterChange}
+            className={styles['semester-filter-input']}
+          />
         </div>
       </div>
       <div className={styles['home-page']}>
         <div className={styles['works-list']}>
-        {filteredWorksByFilters.length === 0 ? (
-            <div className={styles['no-works-message']}>---------- Work not available ----------</div>
+        {filteredWorksByHours.length === 0 ? (
+            <div className={styles['no-works-message']}>Work with specified hours not available</div>
           ) : (
-            filteredWorksByFilters.map((work) => (
+            filteredWorksByHours.map((work) => (
               <div
                 key={work._id}
                 onClick={() => handleWorkClick(work._id)}
@@ -321,11 +227,11 @@ export default function Home() {
                   </div>
                   <div className={styles['work-title']}>{work.title}</div>
                   <div>Place: {work.location}</div>
-                  <div className={styles['ROterm-box3']}>
-                    <h3>Date and Time</h3>
-                    <div className={styles['work-scholarhour']}>Start: {formatdate(work.start)} End : {formatdate(work.end)}</div>
+                  <div className={styles['work-scholarship']}>
+                    <h3>Start date</h3>
+                    <div className={styles['work-scholarhour']}>{work.start}</div>
                     <h4 className={styles['work-scholarhour']}>{work.hours} Given Hours</h4>
-                </div>
+                  </div>
                 </div>
               </div>
             ))
@@ -335,7 +241,8 @@ export default function Home() {
 
         <div className={styles['work-details']}>
           {selectedWork ? (
-            <>  
+            <>
+              
               <button className={styles['close-button']} onClick={handleCloseClick}>
                   Close
               </button>
@@ -352,7 +259,7 @@ export default function Home() {
                 <h3>Date & Time Schedule</h3>
                   <ul>
                       <div>
-                      {formatdate(selectedWork.start)} to {formatdate(selectedWork.end)}
+                        {selectedWork.start} to {selectedWork.end}
                         {selectedWork.hours && (
                           <span> | Scholarship Hours: {selectedWork.hours}</span>
                         )}
@@ -364,6 +271,19 @@ export default function Home() {
               <div className={styles['contact-section']}>
                 <div className={styles['title-container']}>
                     <h3>Student Applicants: {selectedWork.studentList.filter(student => student.status === 'Accepted' || student.status === 'Completed' || student.status === 'Incompleted').length} of {selectedWork.limit}</h3>
+                </div>
+                <div className={styles['details-info']}> 
+                  <div>
+                    <ol>
+                      {selectedWork.studentList
+                         // Filter out students with status 'Applied'
+                        .map((student, index) => (
+                          <li key={student.id} className={styles['student-entry']}>
+                            {index + 1}. {student.studentName}  ( {student.status} )
+                          </li>
+                        ))}
+                    </ol>
+                  </div>
                 </div>
               </div>
               
@@ -417,13 +337,13 @@ export default function Home() {
                   <button onClick={() => handleStatusClick('Rejected')}>Rejected</button>
                 </div>
                 {filteredWorks.length === 0 ? (
-                  <div className={styles['filter-message']}>No works with the status {selectedStatus} yet.</div>
+                  <div className={styles['filter-message']}>No works with the status "{selectedStatus}" yet.</div>
                 ) : (
                   <div>
                     {filteredWorks
                       .filter((work) => work.workStatus === "Accepted")
                       .filter(work => work.studentList.some(student => student.studentName === data?.user?.name))
-                      .filter(work => !work.studentList.some(student => student.status === "Completed" || student.status === "Incompleted"))
+                      .filter(work => !work.studentList.some(student => student.status === "Completed" || student.status === "Incomplete"))
                       .map((work) => (
                         <div key={work.id} className={styles['work-entry1']} onClick={() => handleWorkClick(work._id)}>
                           <div className={styles['work-image']}>
@@ -438,7 +358,7 @@ export default function Home() {
                             <div className={styles['work-scholarship']}>
                                 <div className={styles['unbold']}>
                                   <li>
-                                  {formatdate(work.start)} to {formatdate(work.end)}
+                                    {work.start} to {work.end}
                                     {work.hours && (
                                       <span> | Scholarship Hours: {work.hours}</span>
                                     )}

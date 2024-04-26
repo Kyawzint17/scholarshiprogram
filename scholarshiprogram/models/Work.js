@@ -18,6 +18,7 @@ const workSchema = new mongoose.Schema({
     status: String,
   }],
   workStatus: String,
+  organizerN: String,
   organizer: String,
   rejectMessage: String,
 });

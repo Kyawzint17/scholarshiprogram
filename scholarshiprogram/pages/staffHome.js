@@ -7,6 +7,7 @@ import StaffNavbar from '/components/staffNavbar';
 import StudentModal from '@/components/ModalStudent';
 import DeleteModal from '../components/DeleteModal'; // Import your DeleteModal component
 import { useSession } from 'next-auth/react';
+import Modal from '../components/modal-rejectdisplay';
 
 export default function Home() {
   const [works, setWorks] = useState([]);
@@ -16,11 +17,17 @@ export default function Home() {
   const [selectedStudentApplied, setSelectedStudentApplied] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [semesterFilter, setSemesterFilter] = useState('');
   const { data, status } = useSession();
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const [rejectMessage, setRejectMessage] = useState('');
   const [isStudentModalOpen, setStudentModalOpen] = useState(false);
   const [appliedStudents, setAppliedStudents] = useState([]);
   const [progressStudents, setProgressStudents] = useState([]);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [locationFilter, setLocationFilter] = useState('');
+  const [startDateFilter, setStartDateFilter] = useState('');
+  const [endDateFilter, setEndDateFilter] = useState('');
+  const [semesterFilter, setSemesterFilter] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +57,13 @@ export default function Home() {
       alert("Work not found");
       return;
     }
-  
+    
+    if (selectedWork.studentList.filter(student => student.status === 'Accepted' || student.status === 'Completed' || student.status === 'Incompleted').length >= selectedWork.limit) {
+      console.error("Cannot accept more students. Limit reached.");
+      alert("Cannot accept more students. Limit reached.");
+      return;
+    }
+    
     // Find the student in the studentList array within the selectedWork
     const acceptedStudent = selectedWork.studentList.find((student) => student._id.toString() === id);
   
@@ -59,7 +72,7 @@ export default function Home() {
       alert("Student not found");
       return;
     }
-  
+    
     // Update the status of the accepted student to 'Accepted'
     const updatedStudentList = selectedWork.studentList.map((student) =>
       student._id.toString() === id ? { ...student, status: 'Accepted' } : student
@@ -115,6 +128,12 @@ export default function Home() {
     if (!rejectedStudent) {
       console.error("Student not found");
       alert("Student not found");
+      return;
+    }
+
+    if (rejectedStudent.status === 'Accepted') {
+      console.error("Student is already accepted");
+      alert("Student is already accepted");
       return;
     }
   
@@ -173,6 +192,11 @@ export default function Home() {
       alert("Student not found");
       return;
     }
+    if (studentToComplete.status === 'Incompleted') {
+      console.error("Student is already marked as Incompleted");
+      alert("Student is already marked as Incompleted");
+      return;
+    }
   
     // Update the status of the student to 'Completed'
     const updatedStudentList = selectedWork.studentList.map((student) =>
@@ -229,6 +253,12 @@ export default function Home() {
       alert("Student not found");
       return;
     }
+    
+    if (acceptedStudent.status === 'Completed') {
+      console.error("Student is already completed");
+      alert("Student is already completed");
+      return;
+    }
   
     // Update the status of the accepted student to 'Accepted'
     const updatedStudentList = selectedWork.studentList.map((student) =>
@@ -278,27 +308,35 @@ export default function Home() {
 // Filter works by the organizer's email address
 const filteredWorks = works ? works.filter(work => work.organizer === userEmail) : [];
 
-const filteredWorkS = works ? works.filter(work => {
-  if (selectedStatus === 'all') {
-    return work.organizer === userEmail; // Display works created by the current user
-  }
-  return work.workStatus === selectedStatus && work.organizer === userEmail; // Filter works by both status and organizer
-}) : [];
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  let month = (date.getMonth() + 1).toString();
+  month = month.length === 1 ? '0' + month : month; // Add leading zero if needed
+  let day = date.getDate().toString();
+  day = day.length === 1 ? '0' + day : day; // Add leading zero if needed
+  return `${year}-${month}-${day}`;
+};
 
-// Use filteredWorks instead of works in your JSX rendering
+const formatdate = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0'); // Add leading zero if needed
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add leading zero if needed
+  const year = date.getFullYear();
+  const hours = date.getHours().toString().padStart(2, '0'); // Add leading zero if needed
+  const minutes = date.getMinutes().toString().padStart(2, '0'); // Add leading zero if needed
+  return `${day}/${month}/${year} - ${hours}:${minutes}`;
+};
 
-  const handleStatusClick = (status) => {
-    setSelectedStatus(status);
-  };
-  
-  const handleSemesterFilterChange = (e) => {
-    setSemesterFilter(e.target.value);
-  };
 
-  const filteredWorksBySemester = semesterFilter
+const filteredWorkS = works
   ? works
-      .filter((work) => work.semester === semesterFilter)
-      .filter((work) => work.organizer === userEmail)
+      .filter((work) => {
+        if (selectedStatus === 'all') {
+          return work.organizer === userEmail;
+        }
+        return work.workStatus === selectedStatus && work.organizer === userEmail;
+      })
       .sort((a, b) => {
         const startDateA = new Date(a.start);
         const startDateB = new Date(b.start);
@@ -315,22 +353,69 @@ const filteredWorkS = works ? works.filter(work => {
 
         return 0;
       })
-  : works.sort((a, b) => {
-        const startDateA = new Date(a.start);
-        const startDateB = new Date(b.start);
-        const endDateA = new Date(a.end);
-        const endDateB = new Date(b.end);
+  : [];
 
-        // Compare start dates
-        if (startDateA > startDateB) return -1;
-        if (startDateA < startDateB) return 1;
 
-        // If start dates are equal, compare end dates
-        if (endDateA > endDateB) return -1;
-        if (endDateA < endDateB) return 1;
+// Use filteredWorks instead of works in your JSX rendering
 
-        return 0;
-      });
+  const handleStatusClick = (status) => {
+    setSelectedStatus(status);
+  };
+  
+  const filteredWorksByFilters = works
+  .filter((work) => {
+    const matchesSemester = !semesterFilter || work.semester === semesterFilter;
+    return matchesSemester;
+  })
+  .filter((work) => {
+    const matchesLocation = !locationFilter || (work.location && work.location.toLowerCase() === locationFilter.toLowerCase());
+    return matchesLocation;
+  })
+  .filter((work) => {
+    const matchesStartDate = !startDateFilter || formatDate(work.start) === startDateFilter;
+    return matchesStartDate;
+  })
+  .filter((work) => {
+    const matchesEndDate = !endDateFilter || formatDate(work.end) === endDateFilter;
+    return matchesEndDate;
+  })
+  .filter((work) => work.organizer === userEmail)
+  .sort((a, b) => {
+    const startDateA = new Date(a.start);
+    const startDateB = new Date(b.start);
+    const endDateA = new Date(a.end);
+    const endDateB = new Date(b.end);
+
+    // Compare start dates
+    if (startDateA > startDateB) return -1;
+    if (startDateA < startDateB) return 1;
+
+    // If start dates are equal, compare end dates
+    if (endDateA > endDateB) return -1;
+    if (endDateA < endDateB) return 1;
+
+    return 0;
+  });
+
+  const toggleFilterBox = () => {
+    setFilterOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleSemesterFilterChange = (e) => {
+    setSemesterFilter(e.target.value);
+  };
+
+  const handleLocationFilterChange = (e) => {
+    setLocationFilter(e.target.value);
+  };
+
+  const handleStartDateFilterChange = (e) => {
+    setStartDateFilter(e.target.value);
+  };
+
+  const handleEndDateFilterChange = (e) => {
+    setEndDateFilter(e.target.value);
+  };
 
   const openStudentModal= () => {
     setStudentModalOpen(true);
@@ -338,6 +423,21 @@ const filteredWorkS = works ? works.filter(work => {
 
   const closeStudentModal= () => {
     setStudentModalOpen(false);
+  };
+
+  
+
+  const handleViewButtonClick = (event, work) => {
+    event.stopPropagation(); // Prevent event propagation to parent elements
+  
+    // Open the reject modal here
+    setIsRejectModalOpen(true);
+    setRejectMessage(work.rejectMessage); // Assuming rejectMessage is a property of the work object
+  };
+  
+
+  const handleCloseRejectModal = () => {
+    setIsRejectModalOpen(false);
   };
 
   const handleDeleteConfirmed = async () => {
@@ -374,21 +474,55 @@ const filteredWorkS = works ? works.filter(work => {
       <div className={styles['work-header']}>
         <h1 className={styles['textwork']}>WORK</h1>
         {/* Semester Filter Input */}
-        <input
-          type="text"
-          placeholder="Enter semester (e.g., 2/2023)"
-          value={semesterFilter}
-          onChange={handleSemesterFilterChange}
-          className={styles['semester-filter-input']}
-        />
+        <div className={styles['filter-container']}>
+          <button onClick={toggleFilterBox} className={styles['filter-button1']}>
+            Filter
+          </button>
+          {/* Filter Box */}
+          {filterOpen && (
+            <div className={styles['filter-box']}>
+              {/* Design your filter box here */}
+              <input
+                type="text"
+                placeholder="Enter semester"
+                value={semesterFilter}
+                onChange={handleSemesterFilterChange}
+                className={styles['filter-input']}
+              />
+              <input
+                type="text"
+                placeholder="Enter location"
+                value={locationFilter}
+                onChange={handleLocationFilterChange}
+                className={styles['filter-input']}
+              />
+              <div>Start Date</div>
+              <input
+                type="date"
+                placeholder="Start date"
+                value={startDateFilter}
+                onChange={handleStartDateFilterChange}
+                className={styles['filter-input']}
+              />
+              <div>End Date</div>
+              <input
+                type="date"
+                placeholder="End date"
+                value={endDateFilter}
+                onChange={handleEndDateFilterChange}
+                className={styles['filter-input']}
+              />
+            </div>
+          )}
+        </div>
       </div>
       
       <div className={styles['home-page']}>
         <div className={styles['works-list']}>
-        {filteredWorksBySemester.length === 0 ? (
+        {filteredWorksByFilters.length === 0 ? (
           <div className={styles['no-works-message']}>---------- Work not available ----------</div>
         ) : (
-        filteredWorks.map((work) => (
+        filteredWorksByFilters.map((work) => (
             <div
               key={work._id}
               onClick={() => handleWorkClick(work._id)}
@@ -406,10 +540,10 @@ const filteredWorkS = works ? works.filter(work => {
                 </div>
                 <div className={styles['work-title']}>{work.title}</div>
                 <div>Place: {work.location}</div>
-                <div className={styles['work-scholarship']}>
-                    <h3>Start date</h3>
-                    <div className={styles['work-scholarhour']}>{work.start}</div>
-                    <h4 className={styles['work-scholarhour']}>{work.hours} Given Hours</h4>
+                <div className={styles['ROterm-box2']}>
+                    <h3>Date and Time</h3>
+                    <div className={styles['work-scholarhour']}>Start: {formatdate(work.start)} End : {formatdate(work.end)}</div>
+                    <h4 className={styles['work-scholarhour']}>{work.hours} Given Hours | <Image src="/people.png" alt="Image" width={30} height={30} style={{ verticalAlign: "middle"}}/> {work.studentList.filter(student => student.status === 'Accepted' || student.status === 'Completed' || student.status === 'Incompleted').length} / {work.limit}</h4>
                 </div>
               </div>
             </div>
@@ -435,7 +569,7 @@ const filteredWorkS = works ? works.filter(work => {
                 <h3>Date & Time Schedule</h3>
                 <ul>
                     <div>
-                      {selectedWork.start} to {selectedWork.end}
+                    {formatdate(selectedWork.start)} to {formatdate(selectedWork.end)}
                       {selectedWork.hours && (
                         <span> | Scholarship Hours: {selectedWork.hours}</span>
                       )}
@@ -505,7 +639,7 @@ const filteredWorkS = works ? works.filter(work => {
 
                       <div className={styles['action-section']}>
                         {selectedWork.studentList
-                          .filter((student) => student.status === 'Accepted'  ) // Filter out students with status 'pending'
+                          .filter((student) => student.status === 'Accepted'  || student.status === 'Completed' || student.status === 'Incompleted') // Filter out students with status 'pending'
                           .map((student) => ( 
                           <div key={student.id} className={styles['button-entry']}>
                             <div className={styles['button-group']}>
@@ -525,30 +659,30 @@ const filteredWorkS = works ? works.filter(work => {
                       <div>Name</div>
                       <div>Status</div>
                       <div>Response</div>
-                  
+
                       <div className={styles['name-section']}>
                         {selectedWork.studentList
-                          .filter((student) => student.status === 'Applied' || student.status === 'Accepted') // Filter out students with status 'pending'
+                          .filter((student) => student.status === 'Applied' || student.status === 'Accepted')
                           .map((student) => (
                             <div key={student.id} className={styles['student-entry']}>
-                              <div>{student.studentName} ( {student.studentEmail} )</div>
+                              <div>{student.studentName} ({student.studentEmail})</div>
                               <div>{student.status}</div>
                             </div>
                           ))}
                       </div>
-                  
+
                       <div className={styles['action-section']}>
                         {selectedWork.studentList
-                          .filter((student) => student.status === 'Applied') // Filter out students with status 'pending'
+                          .filter((student) => student.status === 'Applied' || student.status === 'Accepted')
                           .map((student) => (
                             <div key={student.id} className={styles['button-entry']}>
                               <div className={styles['button-group']}>
-                              <button className={styles['accept-button']} onClick={() => {
-                                console.log("Accept button clicked for student with ID:", student._id);
-                                acceptStudent(student._id);
-                              }}>
-                                Accept
-                              </button>
+                                <button className={styles['accept-button']} onClick={() => {
+                                  console.log("Accept button clicked for student with ID:", student._id);
+                                  acceptStudent(student._id);
+                                }}>
+                                  Accept
+                                </button>
                                 <button className={styles['reject-button']} onClick={() => declineStudent(student._id)}>
                                   Decline
                                 </button>
@@ -557,6 +691,7 @@ const filteredWorkS = works ? works.filter(work => {
                           ))}
                       </div>
                     </div>
+
                   ) : (
                 <div className={styles['details-info']}>
                   <div className={styles['details-info']}>
@@ -586,7 +721,7 @@ const filteredWorkS = works ? works.filter(work => {
                     <button onClick={() => handleStatusClick('Rejected')}>Rejected</button>
                     </div>
                     {filteredWorkS.length === 0 ? (
-                    <div className={styles['filter-message']}>No works with the status "{selectedStatus}" yet.</div>
+                    <div className={styles['filter-message']}>No works with the status {selectedStatus} yet.</div>
                     ) : (
                     filteredWorkS.map((work, index) => (
                         <div key={index} className={styles['work-entry']} onClick={() => handleWorkClick(work._id)}>
@@ -599,10 +734,15 @@ const filteredWorkS = works ? works.filter(work => {
                           </div>
                           <div className={styles['work-scholarship']}>
                           <div className={styles['work-title']}>{work.title}</div>
-                          <div>Place: {work.location} |  Start date: {work.start} | {work.hours} Given Hours</div>
+                          <div>Place: {work.location} |  Start date: {formatdate(work.start)} | End date: {formatdate(work.end)}  | {work.hours} Given Hours</div>
                           </div>
                         </div>
                         <div className={styles['work-status']}>
+                            {work.workStatus === 'Rejected' && (
+                                  <button className={styles['view-button']} onClick={(event) => handleViewButtonClick(event, work)}>
+                                    View
+                                  </button>
+                                )}
                             <div>{work.workStatus}</div>
                         </div>
                         </div>
@@ -610,9 +750,9 @@ const filteredWorkS = works ? works.filter(work => {
                     )}
                 </div>
             </div>
-
           )}
         </div>
+        <Modal isOpen={isRejectModalOpen} onClose={handleCloseRejectModal} rejectMessage={rejectMessage} />
       </div>
     </>
   );

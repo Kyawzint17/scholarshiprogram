@@ -142,10 +142,10 @@
   background-color: white;
   color: #000;
   border: 1px solid transparent;
-  left: 40px;
+  left: 50px;
   
   position: absolute;
-  padding: 10px 40px;
+  padding: 10px 30px;
 }
 
 .textwork {
@@ -217,33 +217,30 @@
   z-index: 1000;
 }
 
-
-
-
 .work-item {
   display: grid;
-  /* Use flexbox for layout */
-  grid-template-columns: 13ch 30ch;
-  grid-template-rows: 18ch;
-  align-items: center;
-  /* Vertically align content */
+  grid-template-columns: 15ch 30ch;
+  grid-template-rows: 24ch;
+  align-items: center; /* Align content to the top */
   grid-gap: 10px;
   background-color: #E0F2E9; /* Set the background color of the box */
-  padding: 20px; /* Add padding inside the box */
-  border-radius: 10px; /* Add rounded corners to the box */
-  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
   border: thick solid transparent; /* Add a transparent border initially */
+  transition: border-color 0.3s ease; /* Smooth transition on hover/focus */
 }
 
+.work-item:hover,
 .work-item:focus {
-  border-color: green; /* Change the border color to blue */
+  border-color: green; /* Change the border color to green on hover/focus */
 }
 
 .work-item1 {
   display: grid;
   /* Use flexbox for layout */
   grid-template-columns: 13ch 30ch;
-  grid-template-rows: 18ch;
+  grid-template-rows: 24ch;
   align-items: center;
   /* Vertically align content */
   grid-gap: 10px;
@@ -252,8 +249,10 @@
   border-radius: 10px; /* Add rounded corners to the box */
   margin-bottom: 20px;
   border: thick solid transparent; /* Add a transparent border initially */
+  transition: border-color 0.3s ease; /* Smooth transition on hover/focus */
 }
 
+.work-item1:hover,
 .work-item1:focus {
   border-color: red; /* Change the border color to blue */
 }
@@ -789,7 +788,6 @@
 
 .term-box {
   border: 2px solid red; /* Example border style */
-  padding: 10px; /* Example padding */
   margin-bottom: 10px; /* Example margin */
   border-radius: 5px
 }
@@ -805,8 +803,7 @@
 
 .ROterm-box {
   border: 2px solid green; /* Example border style */
-  padding: 10px; /* Example padding */
-  margin-bottom: 10px; /* Example margin */
+  margin-bottom: 5px; /* Example margin */
   border-radius: 5px
 }
 
@@ -816,6 +813,20 @@
   margin-bottom: 5px; /* Reduced margin */
   width: fit-content; /* Set width to fit the content */
   max-width: 200px; /* Example maximum width */
+  border-radius: 5px
+}
+
+.ROterm-box2 {
+  border: 2px solid green; /* Example border style */
+  padding: 2px; /* Example padding */
+  margin-top: 10px; /* Example margin */
+  border-radius: 5px
+}
+
+.ROterm-box3 {
+  border: 2px solid red; /* Example border style */
+  padding: 2px; /* Example padding */
+  margin-top: 10px; /* Example margin */
   border-radius: 5px
 }
 
@@ -931,7 +942,9 @@
   width: 80%;
   justify-content: flex-end; /* Align buttons to the right */
   gap: 10px; /* Adjust as needed */
+  align-items: center;
 }
+
 
 .button-entry {
   display: flex;
@@ -1013,4 +1026,95 @@
   padding: 5px; /* Adjust the padding as needed */
   border: 1px solid #ccc; /* Add border color */
   border-radius: 5px; /* Add border radius */
+}
+
+.textstyle {
+  font-weight: bold;
+  font-size: smaller;
+}
+
+.work-status {
+  display: flex; /* Add flexbox display */
+  align-items: center; /* Align items vertically */
+}
+
+.view-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin-right: 20px; /* Add margin to separate from work status */
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.view-button:hover {
+  background-color: #45a049;
+}
+
+/* Filter button */
+.filter-button {
+  background-color: red; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.filter-button1 {
+  background-color: green; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Filter box */
+.filter-box {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter input */
+.filter-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Filter button inside the filter box */
+.filter-box button {
+  background-color: red; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
 }

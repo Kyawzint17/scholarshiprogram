@@ -19,6 +19,7 @@
     padding: 70px 250px; /* Increase the padding for a bigger modal */
     text-align: center;
     position: relative; /* Add relative positioning */
+    color: black;
   }
   
   .modal h2 {
@@ -111,4 +112,12 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 15px;
+  }
+
+  .modalFooter {
+    margin-top: 15px;
+  }
+
+  .modalTitle {
+    margin-top: 15px;
   }

@@ -24,7 +24,7 @@ export default function Menu() {
                         <Link href={'/registerHome'}>
                         <button className={styles['custom-button']}>Registrar</button>
                         </Link>
-                        <Link href={'/staffHome'}>
+                        <Link href={'/staffhouse'}>
                         <button className={styles['custom-button']}>Organizer</button>
                         </Link>
                     </div>

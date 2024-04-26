@@ -49,6 +49,8 @@ export default function Profile() {
         const completedHours = work.studentList.reduce((sum, student) => {
           if (student.status === 'Completed') {
             return sum + (work.hours || 0);
+          } else if (student.status === 'Incomplete') {
+            return sum; // If status is "Incomplete", don't add hours to the total
           }
           return sum;
         }, 0);
@@ -56,6 +58,16 @@ export default function Profile() {
       }, 0);
     return { ...acc, [semester]: totalHours };
   }, {});
+
+  const formatdate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getUTCDate().toString().padStart(2, '0'); // Add leading zero if needed
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0'); // Add leading zero if needed
+    const year = date.getUTCFullYear();
+    const hours = date.getUTCHours().toString().padStart(2, '0'); // Add leading zero if needed
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Add leading zero if needed
+    return `${day}/${month}/${year} - ${hours}:${minutes}`;
+  };
 
   return (
     <>
@@ -122,7 +134,7 @@ export default function Profile() {
                                   <div className={styles['unbold']}>
                                     <ul>
                                       <li>
-                                        {work.start} to {work.end}
+                                        {formatdate(work.start)} to {formatdate(work.end)}
                                         {work.hours && (
                                           <span> | Scholarship Hours: {work.hours}</span>
                                         )}
